@@ -1,0 +1,1793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colin Chow — Filmmaker & Photographer</title>
+  <meta name="description" content="Colin Chow is a filmmaker, photographer, and creative producer based in New York. NYU Tisch Film & Television.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;500&display=swap" rel="stylesheet">
+  <style>
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body {
+      background: #fff;
+      color: #000;
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 500;
+      -webkit-font-smoothing: antialiased;
+    }
+    button { font-family: inherit; font-weight: 500; }
+    img { display: block; max-width: 100%; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 44px;
+      background: transparent;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: flex-start;
+      padding: 22px 32px 0;
+      transition: opacity 0.4s ease;
+    }
+    nav.nav-hidden { opacity: 0; pointer-events: none; }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-left button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #000;
+      padding: 0;
+      transition: opacity 0.2s;
+    }
+    .nav-left button:hover { font-weight: 700; }
+
+    .nav-brand {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: -14px;
+    }
+    .nav-brand img {
+      height: 84px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 16px;
+    }
+
+    .nav-location {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #000;
+    }
+    .nav-location-icon {
+      width: 12px;
+      height: 12px;
+      border: 1px solid #000;
+      border-radius: 50%;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .nav-location-icon::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #000;
+    }
+    .nav-clock {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      font-variant-numeric: tabular-nums;
+      color: #000;
+    }
+
+    /* hamburger (mobile) */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      justify-self: end;
+    }
+    .hamburger span { display: block; width: 20px; height: 1px; background: #000; }
+
+    /* mobile overlay */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: #000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-close {
+      position: absolute;
+      top: 10px; right: 24px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 32px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .mobile-menu button {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 26px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    /* ── HERO (pinwheel) ── */
+    #scene {
+      width: 100%;
+      height: 100vh;
+      background: #fff;
+      position: relative;
+      overflow: visible;
+      will-change: opacity;
+    }
+
+    #stage {
+      position: absolute;
+      inset: 0;
+      perspective: 1400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #tilt-rig {
+      transform-style: preserve-3d;
+      will-change: transform;
+      margin-top: 110px;
+    }
+
+    #rig {
+      position: relative;
+      width: 0;
+      height: 0;
+      transform-style: preserve-3d;
+      animation: pinwheel-spin 24s linear infinite;
+    }
+
+    @keyframes pinwheel-spin {
+      from { transform: rotateY(0deg); }
+      to   { transform: rotateY(360deg); }
+    }
+
+    .petal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      backface-visibility: hidden;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .hero-label {
+      position: absolute;
+      left: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #000;
+      z-index: 10;
+    }
+
+    .hero-roles {
+      position: absolute;
+      right: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: right;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #000;
+      z-index: 10;
+    }
+    .hero-roles a {
+      color: #000;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      position: relative;
+      align-self: flex-end;
+      transition: font-weight 0s;
+    }
+    .hero-roles a:hover { font-weight: 700; }
+    .cam-icon {
+      position: absolute;
+      right: 100%;
+      margin-right: 5px;
+      top: 50%;
+      width: 24px;
+      height: 13px;
+      display: block;
+      transform: translateY(-50%) translateX(-8px) scale(0.7);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 180ms ease-in, opacity 140ms ease;
+    }
+    .hero-roles a:hover .cam-icon {
+      transform: translateY(-50%) translateX(0) scale(1);
+      opacity: 1;
+      transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                  opacity 200ms ease;
+    }
+
+    /* ── PIXEL TRAIN ── */
+    #hero-train {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 72px;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .train-track-line {
+      position: absolute;
+      bottom: 14px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: #000;
+      opacity: 0.15;
+    }
+    .train-wrap {
+      position: absolute;
+      bottom: 14px;
+      left: 0;
+      line-height: 0;
+      animation: train-move 20s linear infinite;
+    }
+    .train-svg {
+      display: block;
+      overflow: visible;
+      animation: train-bob 0.45s ease-in-out infinite;
+    }
+    @keyframes train-move {
+      from { transform: translateX(-183px); }
+      to   { transform: translateX(100vw); }
+    }
+    @keyframes train-bob {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-3px); }
+    }
+    .hero-scroll-btn {
+      position: absolute;
+      bottom: 64px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #000;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      transition: opacity 0.35s ease;
+      z-index: 10;
+    }
+    .hero-scroll-btn:hover { opacity: 1; }
+
+    @keyframes puff {
+      0%   { transform: translate(0, 0) scale(0.3); opacity: 0.6; }
+      100% { transform: translate(-5px, -18px) scale(2.4); opacity: 0; }
+    }
+    .puff { stroke: none; }
+    .puff-1 { animation: puff 1.8s ease-out infinite 0s; }
+    .puff-2 { animation: puff 1.8s ease-out infinite 0.6s; }
+    .puff-3 { animation: puff 1.8s ease-out infinite 1.2s; }
+
+
+    /* ── SECTION SHARED ── */
+    section { scroll-margin-top: 44px; }
+    .section-label {
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    /* ── FILM SCRUBBER ── */
+    .film-section {
+      background: #000;
+      padding: 56px 0 48px;
+    }
+    .film-section-header { padding: 0 40px; margin-bottom: 28px; }
+    .film-section-label {
+      color: rgba(255,255,255,0.4);
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .film-rail {
+      height: 22px;
+      background-color: #000;
+      background-image: repeating-linear-gradient(
+        90deg,
+        transparent 0px, transparent 10px,
+        rgba(255,255,255,0.09) 10px, rgba(255,255,255,0.09) 22px,
+        transparent 22px, transparent 36px
+      );
+    }
+
+    .film-viewport {
+      overflow: hidden;
+      position: relative;
+      padding: 10px 0;
+      background: #000;
+      cursor: grab;
+    }
+    .film-viewport:active { cursor: grabbing; }
+    .film-viewport::before,
+    .film-viewport::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 100px;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .film-viewport::before { left: 0;  background: linear-gradient(to right, #000, transparent); }
+    .film-viewport::after  { right: 0; background: linear-gradient(to left,  #000, transparent); }
+
+    .film-track {
+      display: flex;
+      gap: 10px;
+      will-change: transform;
+    }
+
+    .film-frame {
+      flex-shrink: 0;
+      width: 140px;
+      cursor: pointer;
+      opacity: 0.2;
+      transition: opacity 0.25s ease;
+      position: relative;
+    }
+    .film-frame.active { opacity: 1; }
+
+    .film-frame-img {
+      width: 140px;
+      height: 100px;
+      background: #1a1a1a;
+      position: relative;
+      overflow: hidden;
+      outline: 2px solid transparent;
+      outline-offset: -2px;
+      transition: outline-color 0.25s ease;
+    }
+    .film-frame.active .film-frame-img { outline-color: #fff; }
+    .film-frame-img img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+
+    .film-frame-num {
+      position: absolute;
+      top: 4px; left: 5px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 8px;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.05em;
+      z-index: 2;
+      line-height: 1;
+    }
+
+    .film-frame-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+      padding: 20px 6px 5px;
+    }
+    .film-frame-title {
+      color: #fff;
+      font-size: 7.5px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .film-frame-cat {
+      color: rgba(255,255,255,0.5);
+      font-size: 6.5px;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 1px;
+    }
+
+    .film-frame-ghost {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.18);
+      user-select: none;
+    }
+
+    .film-info-panel {
+      text-align: center;
+      padding: 28px 40px 0;
+    }
+    .film-info-title {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .film-info-meta {
+      color: rgba(255,255,255,0.4);
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    /* ── WORK GRID ── */
+    #work { margin-top: 96px; padding: 0 40px; }
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .card-wrap { }
+    .project-card {
+      display: block;
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      text-align: left;
+      overflow: hidden;
+      text-decoration: none;
+    }
+    .card-inner {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      transition: transform 0.35s ease;
+    }
+    .project-card:hover .card-inner { transform: scale(1.03); }
+    .card-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .card-fade {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: #fff;
+      opacity: 0;
+      transition: opacity 300ms ease-out;
+      pointer-events: none;
+    }
+    .project-card:hover .card-fade { opacity: 0.35; }
+    .card-hover-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 2;
+      width: 65%;
+      height: 65%;
+      object-fit: contain;
+      transform: translate(-50%, -50%) scale(0.9);
+      opacity: 0;
+      transition: opacity 300ms ease-out 50ms, transform 300ms ease-out 50ms;
+      pointer-events: none;
+    }
+    /* Icons are assumed black by default (e.g. simple line art) — inverted to
+       white unless the project explicitly opts into rendering it black. */
+    .card-hover-icon--white { filter: brightness(0) invert(1); }
+    .project-card:hover .card-hover-icon { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    .card-category {
+      position: absolute;
+      top: 12px; right: 12px;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      z-index: 1;
+    }
+    .card-ghost {
+      color: #fff;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.22;
+      user-select: none;
+      pointer-events: none;
+    }
+    .card-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 12px 16px;
+      transition: transform 0.35s ease;
+      background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%);
+    }
+    .project-card:hover .card-overlay { transform: translateY(-4px); }
+    .card-title {
+      color: #fff;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .card-year {
+      color: #fff;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      opacity: 0.5;
+      margin-top: 2px;
+    }
+
+    /* ── LOGO BAR ── */
+    .logo-bar { margin-top: 80px; padding: 52px 0; overflow: hidden; }
+    .logo-bar .section-label { padding: 0 40px; margin-bottom: 36px; }
+    .logo-track-wrap { overflow: hidden; }
+    .logo-track {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 100%;
+      padding: 0 40px;
+      gap: 60px;
+    }
+    .logo-track img {
+      width: auto;
+      display: block;
+      flex-shrink: 0;
+    }
+    /* per-logo height normalization — icons taller, wordmarks shorter */
+    .logo-a16z      { height: 30px; }
+    .logo-aws       { height: 30px; }
+    .logo-notion    { height: 36px; }
+    .logo-snowflake { height: 18px; }
+    .logo-tiktok    { height: 36px; }
+    .logo-tvb       { height: 22px; }
+    .logo-bathhouse { height: 22px; }
+    .logo-myka      { height: 44px; }
+
+    /* ── PHOTOS ── */
+    #photos { margin-top: 96px; padding: 0 40px; }
+    .photos-grid { columns: 3; gap: 8px; }
+    .photo-ph {
+      break-inside: avoid;
+      background: #1a1a1a;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1px;
+    }
+    .photo-ph span {
+      color: #fff;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.22;
+      user-select: none;
+    }
+    .photo-item {
+      break-inside: avoid;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+    .photo-item img {
+      width: 100%;
+      display: block;
+      transition: opacity 0.2s;
+    }
+    .photo-item img:hover { opacity: 0.85; }
+
+    /* ── ABOUT ── */
+    #about { margin-top: 96px; padding: 0 40px; }
+
+    .about-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+      margin-top: 48px;
+    }
+    .about-collage {
+      width: 100%;
+      height: auto;
+      display: block;
+      transform: scale(1.08);
+      opacity: 0;
+      transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease-out;
+    }
+    .about-collage.in-view {
+      transform: scale(1);
+      opacity: 1;
+    }
+    .about-text { }
+    .bio-text {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1.65;
+      letter-spacing: -0.04em;
+      text-align: justify;
+    }
+    .bio-text + .bio-text { margin-top: 24px; }
+    .bio-hello {
+      font-size: 1.6em;
+      color: #2563EB;
+      line-height: 1;
+    }
+    .email-btn {
+      display: inline-block;
+      margin-top: 32px;
+      padding: 12px 28px;
+      border: 1px solid #000;
+      color: #000;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: background 0.2s, color 0.2s;
+    }
+    .email-btn:hover { background: #000; color: #fff; }
+    @media (max-width: 768px) {
+      .about-layout {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+    }
+
+    /* ── FOOTER ── */
+    footer { margin-top: 96px; padding: 0 40px 56px; }
+    footer hr { border: none; border-top: 1px solid #000; margin-bottom: 32px; }
+    .footer-row { display: flex; align-items: center; justify-content: space-between; }
+    .footer-name { font-size: 11px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; }
+    .footer-links { display: flex; gap: 32px; list-style: none; }
+    .footer-links a {
+      color: #000;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+    }
+    .footer-links a:hover { opacity: 0.4; }
+
+    /* ── PROJECT OVERLAY ── */
+    .project-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      background: #fff;
+      overflow-y: auto;
+    }
+    .project-overlay.open { display: block; }
+    .overlay-nav {
+      position: sticky;
+      top: 0;
+      background: #fff;
+      border-bottom: 1px solid #000;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      padding: 0 40px;
+      z-index: 10;
+    }
+    .overlay-back {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #000;
+      padding: 0;
+      transition: opacity 0.2s;
+    }
+    .overlay-back:hover { opacity: 0.4; }
+    .overlay-header { padding: 48px 40px 40px; }
+    .overlay-meta {
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.4;
+      margin-bottom: 10px;
+    }
+    .overlay-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 500;
+      text-transform: uppercase;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      font-size: clamp(2rem, 6vw, 5rem);
+    }
+    .overlay-gallery { columns: 2; gap: 1px; padding: 0 40px; }
+    .gallery-item { break-inside: avoid; margin-bottom: 1px; cursor: pointer; overflow: hidden; }
+    .gallery-item img { width: 100%; transition: opacity 0.2s; }
+    .gallery-item:hover img { opacity: 0.82; }
+    .gallery-ph {
+      aspect-ratio: 4 / 3;
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .gallery-ph span {
+      color: #fff;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.25;
+      user-select: none;
+    }
+    .overlay-empty { padding: 96px 40px; text-align: center; }
+    .overlay-empty p {
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.3;
+      line-height: 1.9;
+    }
+
+    /* ── CREDITS PAGE ── */
+    .credits-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      background: #fff;
+      overflow-y: auto;
+    }
+    .credits-overlay.open { display: block; }
+
+    .credits-header { padding: 56px 40px 0; }
+    .credits-page-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 500;
+      text-transform: uppercase;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      font-size: clamp(3rem, 8vw, 9vw);
+      margin-bottom: 64px;
+    }
+
+    .credits-list { padding: 0 40px 80px; }
+
+    .credit-project {
+      border-top: 1px solid #000;
+      padding: 28px 0;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: start;
+    }
+    .credit-project:last-child { border-bottom: 1px solid #000; }
+
+    .credit-left {}
+    .credit-project-title {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .credit-roles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+    }
+    .credit-role {
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.5;
+    }
+    .credit-role::before { content: '— '; }
+
+    .credit-right { text-align: right; }
+    .credit-year {
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      opacity: 0.4;
+    }
+    .credit-category {
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.3;
+      margin-top: 4px;
+    }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: #000;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+    .lb-wrap { max-width: 1000px; width: 100%; padding: 0 80px; }
+    .lb-wrap img { width: 100%; max-height: 82vh; object-fit: contain; }
+    .lb-counter {
+      text-align: center;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.35;
+      margin-top: 16px;
+    }
+    .lb-btn {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 28px;
+      cursor: pointer;
+      opacity: 0.45;
+      transition: opacity 0.2s;
+      padding: 16px;
+    }
+    .lb-btn:hover { opacity: 1; }
+    #lbPrev { left: 16px; }
+    #lbNext { right: 16px; }
+    .lb-close {
+      position: absolute;
+      top: 14px; right: 24px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 30px;
+      cursor: pointer;
+      opacity: 0.45;
+      transition: opacity 0.2s;
+      line-height: 1;
+    }
+    .lb-close:hover { opacity: 1; }
+
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav {
+        grid-template-columns: 1fr auto;
+        padding: 0 24px;
+      }
+      .nav-left { display: none; }
+      .nav-brand { text-align: left; }
+      .nav-right { display: none; }
+      .hamburger { display: flex; }
+
+      #scene { cursor: default; }
+
+      #work   { padding: 0 24px; margin-top: 64px; }
+      #photos { padding: 0 24px; margin-top: 64px; }
+      .logo-bar { margin-top: 56px; padding: 40px 0; }
+      .logo-bar .section-label { padding: 0 24px; }
+      .logo-a16z      { height: 21px; }
+      .logo-aws       { height: 21px; }
+      .logo-notion    { height: 25px; }
+      .logo-snowflake { height: 13px; }
+      .logo-tiktok    { height: 25px; }
+      .logo-tvb       { height: 16px; }
+      .logo-bathhouse { height: 16px; }
+      .logo-myka      { height: 32px; }
+      #about  { padding: 0 24px; margin-top: 64px; }
+      footer  { padding: 0 24px 40px; margin-top: 64px; }
+
+      .work-grid { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; gap: 32px; }
+
+      .overlay-nav    { padding: 0 24px; }
+      .overlay-header { padding: 32px 24px 32px; }
+      .overlay-gallery { columns: 1; padding: 0 24px; }
+      .overlay-empty  { padding: 64px 24px; }
+
+      .credits-header { padding: 40px 24px 0; }
+      .credits-list   { padding: 0 24px 64px; }
+      .credit-project { grid-template-columns: 1fr; gap: 8px; }
+      .credit-right   { text-align: left; }
+
+      .lb-wrap { padding: 0 52px; }
+      #lbPrev { left: 8px; }
+      #lbNext { right: 8px; }
+    }
+
+    @media (min-width: 1024px) {
+      .overlay-gallery { columns: 3; }
+      .photos-grid { columns: 4; }
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ────────────────────────────────────────── -->
+<nav>
+  <ul class="nav-left">
+    <li><button onclick="scrollToSection('work')">Work</button></li>
+    <li><button onclick="scrollToSection('about')">About</button></li>
+    <li><button onclick="openCredits()">Credits</button></li>
+  </ul>
+
+  <a href="#" class="nav-brand"><img src="yuh.png" alt="Colin Chow"></a>
+
+  <div class="nav-right">
+    <span class="nav-location">
+      <span class="nav-location-icon"></span>
+      Based in New York
+    </span>
+    <span class="nav-clock" id="navClock"></span>
+  </div>
+
+  <button class="hamburger" onclick="openMenu()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── MOBILE MENU ────────────────────────────────── -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="closeMenu()" aria-label="Close">×</button>
+  <button onclick="scrollTo('work');   closeMenu()">Work</button>
+  <button onclick="scrollTo('about');  closeMenu()">About</button>
+  <button onclick="openCredits();      closeMenu()">Credits</button>
+  <button onclick="scrollToSection('contact');closeMenu()">Contact</button>
+</div>
+
+<!-- ── HERO ───────────────────────────────────────── -->
+<div id="scene">
+  <p class="hero-label">Creative Director</p>
+  <div class="hero-roles">
+    <a href="films.html"><svg class="cam-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 14" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="11" y="0" width="4" height="1"/><rect x="9" y="1" width="8" height="1"/><rect x="0" y="2" width="26" height="12"/><rect x="1" y="3" width="24" height="9" fill="white"/><rect x="2" y="5" width="2" height="1"/><rect x="5" y="3" width="16" height="9"/><rect x="6" y="4" width="14" height="7" fill="white"/><rect x="7" y="5" width="12" height="5"/><rect x="8" y="6" width="10" height="3" fill="white"/><rect x="9" y="7" width="2" height="1"/><rect x="14" y="7" width="2" height="1"/></svg>Films</a>
+    <a href="marketing.html"><svg class="cam-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 14" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="11" y="0" width="4" height="1"/><rect x="9" y="1" width="8" height="1"/><rect x="0" y="2" width="26" height="12"/><rect x="1" y="3" width="24" height="9" fill="white"/><rect x="2" y="5" width="2" height="1"/><rect x="5" y="3" width="16" height="9"/><rect x="6" y="4" width="14" height="7" fill="white"/><rect x="7" y="5" width="12" height="5"/><rect x="8" y="6" width="10" height="3" fill="white"/><rect x="9" y="7" width="2" height="1"/><rect x="14" y="7" width="2" height="1"/></svg>Marketing</a>
+    <a href="photos.html"><svg class="cam-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 14" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="11" y="0" width="4" height="1"/><rect x="9" y="1" width="8" height="1"/><rect x="0" y="2" width="26" height="12"/><rect x="1" y="3" width="24" height="9" fill="white"/><rect x="2" y="5" width="2" height="1"/><rect x="5" y="3" width="16" height="9"/><rect x="6" y="4" width="14" height="7" fill="white"/><rect x="7" y="5" width="12" height="5"/><rect x="8" y="6" width="10" height="3" fill="white"/><rect x="9" y="7" width="2" height="1"/><rect x="14" y="7" width="2" height="1"/></svg>Photos</a>
+  </div>
+  <!-- pixel train -->
+  <div id="hero-train">
+    <div class="train-track-line"></div>
+    <div class="train-wrap">
+      <svg class="train-svg" xmlns="http://www.w3.org/2000/svg"
+           viewBox="0 0 316 50" width="183" height="29"
+           fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="square" shape-rendering="crispEdges">
+        <g transform="scale(-1,1) translate(-316,0)">
+        <!-- LOCOMOTIVE -->
+        <rect x="5"  y="1"  width="12" height="3"/>
+        <rect x="7"  y="4"  width="8"  height="11"/>
+        <rect x="22" y="10" width="10" height="7"/>
+        <rect x="2"  y="17" width="50" height="16"/>
+        <rect x="44" y="7"  width="22" height="26"/>
+        <rect x="48" y="11" width="10" height="10"/>
+        <rect x="0"  y="33" width="68" height="5"/>
+        <rect x="0"  y="38" width="8"  height="3"/>
+        <rect x="5"  y="38" width="9"  height="9"/>
+        <rect x="19" y="36" width="13" height="13"/>
+        <rect x="38" y="36" width="13" height="13"/>
+        <rect x="54" y="38" width="9"  height="9"/>
+        <rect x="25" y="43" width="19" height="2" stroke-width="1"/>
+        <rect x="25" y="41" width="2"  height="2" fill="#000" stroke="none"/>
+        <rect x="44" y="41" width="2"  height="2" fill="#000" stroke="none"/>
+        <rect x="68" y="41" width="10" height="3"/>
+        <!-- CAR 1 — Passenger -->
+        <rect x="78"  y="16" width="52" height="4"/>
+        <rect x="78"  y="18" width="52" height="18"/>
+        <rect x="82"  y="22" width="10" height="10"/>
+        <rect x="96"  y="22" width="10" height="10"/>
+        <rect x="110" y="22" width="10" height="10"/>
+        <rect x="78"  y="36" width="52" height="5"/>
+        <rect x="82"  y="38" width="10" height="10"/>
+        <rect x="116" y="38" width="10" height="10"/>
+        <rect x="130" y="41" width="10" height="3"/>
+        <!-- CAR 2 — Boxcar -->
+        <rect x="140" y="13" width="50" height="3"/>
+        <rect x="140" y="15" width="50" height="21"/>
+        <rect x="156" y="15" width="16" height="21"/>
+        <rect x="140" y="36" width="50" height="5"/>
+        <rect x="144" y="38" width="10" height="10"/>
+        <rect x="176" y="38" width="10" height="10"/>
+        <rect x="190" y="41" width="10" height="3"/>
+        <!-- CAR 3 — Tanker -->
+        <rect x="204" y="17" width="44" height="15"/>
+        <rect x="206" y="15" width="38" height="3"/>
+        <rect x="218" y="12" width="12" height="4"/>
+        <rect x="200" y="19" width="5"  height="13"/>
+        <rect x="247" y="19" width="5"  height="13"/>
+        <rect x="200" y="32" width="52" height="6"/>
+        <rect x="204" y="38" width="10" height="10"/>
+        <rect x="238" y="38" width="10" height="10"/>
+        <rect x="252" y="41" width="10" height="3"/>
+        <!-- CAR 4 — Passenger -->
+        <rect x="262" y="16" width="52" height="4"/>
+        <rect x="262" y="18" width="52" height="18"/>
+        <rect x="266" y="22" width="10" height="10"/>
+        <rect x="280" y="22" width="10" height="10"/>
+        <rect x="294" y="22" width="10" height="10"/>
+        <rect x="262" y="36" width="52" height="5"/>
+        <rect x="266" y="38" width="10" height="10"/>
+        <rect x="300" y="38" width="10" height="10"/>
+        </g>
+        <!-- Smoke: chimney at x≈305 (316-11), y=1 -->
+        <circle class="puff puff-1" cx="305" cy="1" r="3"   fill="#222"/>
+        <circle class="puff puff-2" cx="305" cy="1" r="2.5" fill="#222"/>
+        <circle class="puff puff-3" cx="305" cy="1" r="3.5" fill="#222"/>
+      </svg>
+    </div>
+  </div>
+
+  <div id="stage">
+    <div id="tilt-rig">
+      <div id="rig"></div>
+    </div>
+  </div>
+  <button class="hero-scroll-btn" onclick="document.getElementById('work').scrollIntoView({behavior:'smooth'})">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 3v10M3 9l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>Scroll</span>
+  </button>
+</div>
+
+<!-- ── SELECTED WORK ──────────────────────────────── -->
+<section id="work">
+  <h2 class="section-label">Featured Work</h2>
+  <div class="work-grid" id="workGrid"></div>
+</section>
+
+<!-- ── LOGO BAR ───────────────────────────────────── -->
+<section class="logo-bar">
+  <p class="section-label">Worked with</p>
+  <div class="logo-track-wrap">
+    <div class="logo-track">
+      <img class="logo-a16z"      src="logos/A16z-Emblem.png"                   alt="a16z">
+      <img class="logo-aws"       src="logos/Amazon_Web_Services_Logo.svg.webp" alt="Amazon Web Services">
+      <img class="logo-notion"    src="logos/Notion_app_logo.png"               alt="Notion">
+      <img class="logo-snowflake" src="logos/Snowflake_Logo.svg.webp"           alt="Snowflake">
+      <img class="logo-tiktok"    src="logos/DgtQSxAYAHv52vo69JGcKB.jpg"        alt="TikTok">
+      <img class="logo-tvb"       src="logos/Tvb_logo.svg.webp"                 alt="TVB">
+      <img class="logo-bathhouse" src="logos/images.jpeg"                        alt="Bathhouse">
+      <img class="logo-myka"      src="logos/myka-logo-tagged.png"               alt="Myka">
+    </div>
+  </div>
+</section>
+
+<!-- ── PHOTOS ─────────────────────────────────────── -->
+<section id="photos">
+  <h2 class="section-label">Photos</h2>
+  <div class="photos-grid">
+    <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/BG3A0070.jpg" alt="Photo" loading="lazy"></div>
+    <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/BG3A0947-Enhanced-NR.jpg" alt="Photo" loading="lazy"></div>
+    <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/BG3A2908.jpg" alt="Photo" loading="lazy"></div>
+    <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/BG3A2972.jpg" alt="Photo" loading="lazy"></div>
+    <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/BG3A3964.jpg" alt="Photo" loading="lazy"></div>
+    <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/DSC00164.jpg" alt="Photo" loading="lazy"></div>
+    <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/DSC00639.jpg" alt="Photo" loading="lazy"></div>
+    <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/DSC00780.jpg" alt="Photo" loading="lazy"></div>
+    <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/DSC06190.jpg" alt="Photo" loading="lazy"></div>
+    <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/DSC06441.jpg" alt="Photo" loading="lazy"></div>
+    <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/DSC06702.JPG" alt="Photo" loading="lazy"></div>
+    <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/8e3e3469-f415-4ab3-becb-0bd2ec3d3046.png" alt="Photo" loading="lazy"></div>
+    <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/DSC09702.jpg" alt="Photo" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- ── ABOUT ──────────────────────────────────────── -->
+<section id="about">
+  <h2 class="section-label">About</h2>
+  <div class="about-layout">
+    <img class="about-collage" src="about/about-collage.png" alt="Behind the scenes collage">
+    <div class="about-text">
+      <p class="bio-text"><span class="bio-hello">Hello,</span> I'm Colin Chow, a creative director and producer based in New York and the Bay Area.</p>
+      <p class="bio-text">I am currently a student at NYU Tisch studying Film &amp; Television with a minor in Business of Entertainment, Media, and Technology. I am passionate about driving growth through creative marketing and storytelling and hope to build a career at the intersection of entertainment, business, and creative production.</p>
+      <p class="bio-text">I picked up a camera during the pandemic and never really put it down. What started as curiosity turned into a fascination with how moving images can make people feel something. Since then, I've produced branded content for companies like TikTok, a16z, AWS, and Notion. I also run my own production company, where I take on projects that push my creative practice further, offering services in cinematography, editing, and color.</p>
+      <a class="email-btn" href="mailto:colinchow07@gmail.com">Let's Work</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────── -->
+<footer id="contact">
+  <hr>
+  <div class="footer-row">
+    <span class="footer-name">Colin Chow</span>
+    <ul class="footer-links">
+      <li><a href="https://www.instagram.com/colchow_/" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://www.linkedin.com/in/colin-chow-7a4744281/" target="_blank" rel="noopener">LinkedIn</a></li>
+    </ul>
+  </div>
+</footer>
+
+<!-- ── PROJECT OVERLAY ────────────────────────────── -->
+<div class="project-overlay" id="projectOverlay">
+  <div class="overlay-nav">
+    <button class="overlay-back" onclick="closeProject()">← All Work</button>
+  </div>
+  <div class="overlay-gallery" id="overlayGallery"></div>
+  <div style="height:80px"></div>
+</div>
+
+<!-- ── CREDITS PAGE ───────────────────────────────── -->
+<div class="credits-overlay" id="creditsOverlay">
+  <div class="overlay-nav">
+    <button class="overlay-back" onclick="closeCredits()">← Back</button>
+  </div>
+  <div class="credits-header">
+    <h2 class="credits-page-title">Film<br>Credits</h2>
+  </div>
+  <div class="credits-list" id="creditsList"></div>
+</div>
+
+<!-- ── LIGHTBOX ───────────────────────────────────── -->
+<div class="lightbox" id="lightbox" onclick="handleLightboxBgClick(event)">
+  <button class="lb-btn" id="lbPrev" onclick="lbPrev()" aria-label="Previous">←</button>
+  <div class="lb-wrap">
+    <img id="lbImg" src="" alt="">
+    <p class="lb-counter" id="lbCounter"></p>
+  </div>
+  <button class="lb-btn" id="lbNext" onclick="lbNext()" aria-label="Next">→</button>
+  <button class="lb-close" onclick="closeLightbox()" aria-label="Close lightbox">×</button>
+</div>
+
+<script>
+
+// ── PROJECT DATA ─────────────────────────────────────────────────────────────
+
+var projects = [
+  { slug: 'knicks-parade',        title: 'Knicks Parade',            category: 'Event Coverage',     year: 2025, cover: 'knicks%20parade%20coverage/222.JPG', images: [], href: 'knicks-parade.html', hideYear: true },
+  { slug: 'steph-curry',          title: 'Stephen Curry NYU Workout', category: 'Sports Photography', year: 2025, cover: 'steph%20curry/10109.jpg', images: [
+    'steph%20curry/9999.png', 'steph%20curry/10109.jpg', 'steph%20curry/333.jpg', 'steph%20curry/666.jpg',
+  ], href: 'steph-curry.html', hideYear: true, hoverIcon: 'thumnail%20graphic/curry.png', hoverIconColor: 'black' },
+  { slug: 'espn',                 title: 'ESPN NBA Finals Pre-Game Behind the Scenes', category: 'Event Coverage', year: 2025, cover: 'espn/222.jpg', images: [
+    'espn/10111.jpg', 'espn/10113.jpg', 'espn/222.jpg', 'espn/888.jpg', 'espn/DSC06165%20copy.jpg',
+  ], href: 'espn.html', hideYear: true, hoverIcon: 'thumnail%20graphic/espn.png', hoverIconColor: 'black' },
+  { slug: 'spurs-pregame',        title: 'Spurs Pre-Game Walkout',   category: 'Event Coverage',     year: 2026, cover: 'spurs%20pregame%202026/111.JPG', images: [
+    'spurs%20pregame%202026/111.JPG',      'spurs%20pregame%202026/444.JPG',      'spurs%20pregame%202026/555.JPG',
+    'spurs%20pregame%202026/777.JPG',      'spurs%20pregame%202026/999.JPG',      'spurs%20pregame%202026/10112.JPG',
+    'spurs%20pregame%202026/DSC06250.JPG', 'spurs%20pregame%202026/DSC06357.JPG', 'spurs%20pregame%202026/DSC06375.JPG',
+    'spurs%20pregame%202026/DSC06583.JPG',
+  ], href: 'spurs-pregame.html', hideYear: true, hoverIcon: 'thumnail%20graphic/spursss.png', hoverIconColor: 'black' },
+  { slug: 'ccya-basketball',      title: 'CCYA Celebrity Basketball', category: 'Event Coverage',     year: 2024, cover: '', images: [] },
+  { slug: 'prototype',            title: 'Prototype',                category: 'Film',               year: 2025, cover: '', images: [] },
+  { slug: 'cal-stanford',         title: 'Cal @ Stanford',           category: 'Sports Photography', year: 2024, cover: '', images: [] },
+  { slug: 'studio-shoots',        title: 'Studio Shoots',            category: 'Photography',        year: 2026, cover: '', images: [] },
+  { slug: 'experimental-spec-ad', title: 'Experimental Spec Ad',     category: 'Commercial',         year: 2024, cover: '', images: [] },
+  { slug: 'indesign-coverage',    title: 'InDesign Coverage',        category: 'Event Coverage',     year: 2023, cover: '', images: [] },
+];
+
+
+// ── CREDITS DATA ─────────────────────────────────────────────────────────────
+
+var filmCredits = [
+  {
+    title:    'Prototype',
+    year:     2025,
+    category: 'Short Film',
+    roles:    ['Director', 'Director of Photography', 'Editor'],
+  },
+  {
+    title:    'Experimental Spec Ad',
+    year:     2024,
+    category: 'Commercial',
+    roles:    ['Director', 'Director of Photography'],
+  },
+  {
+    title:    'CCYA Celebrity Basketball',
+    year:     2024,
+    category: 'Event Coverage',
+    roles:    ['Director', 'Director of Photography', 'Editor'],
+  },
+  {
+    title:    'Lilie Athletica',
+    year:     2024,
+    category: 'Branded Content',
+    roles:    ['Director', 'Director of Photography'],
+  },
+  {
+    title:    'Cal @ Stanford',
+    year:     2024,
+    category: 'Sports Photography',
+    roles:    ['Photographer'],
+  },
+  {
+    title:    'InDesign Coverage',
+    year:     2023,
+    category: 'Event Coverage',
+    roles:    ['Director of Photography', 'Editor'],
+  },
+  {
+    title:    'Freelance Automotive',
+    year:     2023,
+    category: 'Photography',
+    roles:    ['Photographer'],
+  },
+];
+
+
+// ── BUILD WORK GRID ──────────────────────────────────────────────────────────
+
+var grid = document.getElementById('workGrid');
+
+projects.forEach(function(p, i) {
+  var wrap = document.createElement('div');
+  wrap.className = 'card-wrap';
+
+  var coverHtml = p.cover
+    ? '<img class="card-img" src="' + p.cover + '" alt="' + p.title + '">'
+    : '<span class="card-ghost">' + p.title + '</span>';
+
+  // hoverIcon is optional per-project — cards without one just get the white fade.
+  var hoverIconHtml = p.hoverIcon
+    ? '<img class="card-hover-icon' + (p.hoverIconColor === 'black' ? '' : ' card-hover-icon--white') + '" src="' + p.hoverIcon + '" alt="">'
+    : '';
+
+  var inner =
+    '<div class="card-inner">' +
+      coverHtml +
+      '<div class="card-fade"></div>' +
+      hoverIconHtml +
+    '</div>';
+
+  wrap.innerHTML = p.href
+    ? '<a class="project-card" href="' + p.href + '" aria-label="View ' + p.title + '">' + inner + '</a>'
+    : '<button class="project-card" onclick="openProject(' + i + ')" aria-label="View ' + p.title + '">' + inner + '</button>';
+
+  grid.appendChild(wrap);
+});
+
+
+// ── BUILD CREDITS LIST ───────────────────────────────────────────────────────
+
+var creditsList = document.getElementById('creditsList');
+
+filmCredits.forEach(function(c) {
+  var rolesHtml = c.roles.map(function(r) {
+    return '<span class="credit-role">' + r + '</span>';
+  }).join('');
+
+  var item = document.createElement('div');
+  item.className = 'credit-project';
+  item.innerHTML =
+    '<div class="credit-left">' +
+      '<p class="credit-project-title">' + c.title + '</p>' +
+      '<div class="credit-roles">' + rolesHtml + '</div>' +
+    '</div>' +
+    '<div class="credit-right">' +
+      '<p class="credit-year">' + c.year + '</p>' +
+      '<p class="credit-category">' + c.category + '</p>' +
+    '</div>';
+
+  creditsList.appendChild(item);
+});
+
+
+
+
+// ── SMART NAV (hide on scroll down, show on scroll up) ───────────────────────
+
+(function() {
+  var nav = document.querySelector('nav');
+  var lastY = 0;
+  window.addEventListener('scroll', function() {
+    var y = window.scrollY;
+    var workTop = document.getElementById('work').offsetTop - 44;
+    if (y > lastY && y > workTop) {
+      nav.classList.add('nav-hidden');
+    } else {
+      nav.classList.remove('nav-hidden');
+    }
+    lastY = y;
+  }, { passive: true });
+})();
+
+
+// ── LIVE CLOCK ───────────────────────────────────────────────────────────────
+
+function updateClock() {
+  var now  = new Date();
+  var h    = now.getHours();
+  var m    = now.getMinutes();
+  var ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  var str  = h + ':' + (m < 10 ? '0' : '') + m + ' ' + ampm;
+  document.getElementById('navClock').textContent = str;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+
+// ── NAV ──────────────────────────────────────────────────────────────────────
+
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+function openMenu()  { document.getElementById('mobileMenu').classList.add('open');    document.body.style.overflow = 'hidden'; }
+function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); document.body.style.overflow = ''; }
+
+
+// ── HERO PINWHEEL ────────────────────────────────────────────────────────────
+
+const PROJECT_IMAGES = [
+  'hero stacks/EILEENDRAFT.mp4',
+  'hero stacks/fihnale copy.mp4',
+  'hero stacks/hero.mp4',
+  'hero stacks/ONER copy.mp4',
+  'hero stacks/scrapbook copy.mp4',
+  'hero stacks/Sequence 01_2 copy.mp4',
+  'hero stacks/Sequence 02 copy.mp4',
+  'hero stacks/sffinal copy.mp4',
+  'hero stacks/COLIN CHOW FINAL.mp4',
+  'hero stacks/FINALDRAFT copy.mp4',
+  'hero stacks/NOCREDITS.mp4',
+  'hero stacks/story.mov',
+];
+
+const n = PROJECT_IMAGES.length;
+const LEN = 300;
+const THICK = 2;
+const GAP = 35;
+
+const rig     = document.getElementById('rig');
+const tiltRig = document.getElementById('tilt-rig');
+const scene   = document.getElementById('scene');
+
+function makeVid(src, mirror) {
+  const v = document.createElement('video');
+  v.src = src; v.autoplay = true; v.muted = true; v.loop = true;
+  v.setAttribute('playsinline', '');
+  v.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;'
+    + (mirror ? 'transform:scaleX(-1);' : '');
+  return v;
+}
+
+PROJECT_IMAGES.forEach((imgSrc, i) => {
+  const baseAngle = (i / n) * 360;
+
+  const wrap = document.createElement('div');
+  wrap.style.cssText = `
+    position: absolute;
+    left: 0;
+    top: -113px;
+    width: 1px;
+    height: 1px;
+    transform-style: preserve-3d;
+    transform: rotateY(${baseAngle}deg);
+  `;
+
+  const inner = document.createElement('div');
+  inner.style.cssText = `
+    position: absolute;
+    left: ${GAP}px;
+    top: -113px;
+    transform-style: preserve-3d;
+  `;
+
+  const front = document.createElement('div');
+  front.className = 'petal';
+  front.style.cssText = `
+    width: ${LEN}px; height: 225px;
+    transform: translateZ(${THICK / 2}px);
+    box-shadow: 2px 4px 24px rgba(0,0,0,0.12);
+  `;
+  front.appendChild(makeVid(imgSrc, false));
+
+  const back = document.createElement('div');
+  back.className = 'petal';
+  back.style.cssText = `
+    width: ${LEN}px; height: 225px;
+    filter: brightness(0.55);
+    transform: translateZ(-${THICK / 2}px) rotateY(180deg);
+  `;
+  back.appendChild(makeVid(imgSrc, true));
+
+  inner.appendChild(back);
+  inner.appendChild(front);
+  wrap.appendChild(inner);
+  rig.appendChild(wrap);
+});
+
+// ── ROTATION LOGIC ───────────────────────────────────────────
+// Spin is a CSS animation on #rig (GPU compositor — constant speed).
+// JS only drives the X/Y tilt from mouse position.
+
+const TILT_CAP_X = 90;
+const TILT_CAP_Y = 90;
+
+let tiltX = 0, tiltY = 0;
+let targetTiltX = 0, targetTiltY = 0;
+
+let mouseScrollBtnOp = 1; // fades when pinwheel reaches scroll button (relY 0.65–0.82)
+let mouseTrainOp     = 1; // fades only when pinwheel reaches the train itself (relY 0.82–0.93)
+
+window.addEventListener('mousemove', e => {
+  targetTiltX = -(((e.clientY / window.innerHeight) - 0.5) * 2) * TILT_CAP_X;
+  targetTiltY =  (((e.clientX / window.innerWidth)  - 0.5) * 2) * TILT_CAP_Y;
+  const relY = e.clientY / window.innerHeight;
+  mouseScrollBtnOp = Math.max(0, Math.min(1, (0.82 - relY) / (0.82 - 0.65)));
+  mouseTrainOp     = Math.max(0, Math.min(1, (0.93 - relY) / (0.93 - 0.82)));
+  applyBottomOp();
+}, { passive: true });
+
+scene.addEventListener('mouseleave', () => {
+  mouseScrollBtnOp = 1; mouseTrainOp = 1; applyBottomOp();
+});
+
+new IntersectionObserver(([entry]) => {
+  if (!entry.isIntersecting) {
+    targetTiltX = 0; targetTiltY = 0;
+    mouseScrollBtnOp = 1; mouseTrainOp = 1; applyBottomOp();
+  }
+}, { threshold: 0 }).observe(scene);
+
+scene.addEventListener('touchmove', e => {
+  const t = e.touches[0];
+  targetTiltX = -(((t.clientY / window.innerHeight) - 0.5) * 2) * TILT_CAP_X;
+  targetTiltY =  (((t.clientX / window.innerWidth)  - 0.5) * 2) * TILT_CAP_Y;
+}, { passive: true });
+
+scene.addEventListener('contextmenu', e => {
+  e.preventDefault();
+  document.getElementById('work').scrollIntoView({ behavior: 'smooth' });
+});
+
+let lastTime = null;
+function render(timestamp) {
+  if (lastTime === null) lastTime = timestamp;
+  const delta = Math.min((timestamp - lastTime) / (1000 / 60), 3);
+  lastTime = timestamp;
+
+  tiltX += (targetTiltX - tiltX) * (1 - Math.pow(0.93, delta));
+  tiltY += (targetTiltY - tiltY) * (1 - Math.pow(0.93, delta));
+  tiltRig.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+  requestAnimationFrame(render);
+}
+requestAnimationFrame(render);
+
+// ── SCROLL: FADE ─────────────────────────────────────────────
+
+const heroTrain    = document.getElementById('hero-train');
+const heroScrollBtn = document.querySelector('.hero-scroll-btn');
+let scrollTrainOp = 1;
+
+function applyBottomOp() {
+  const trainOp  = Math.min(scrollTrainOp, mouseTrainOp);
+  const btnOp    = Math.min(scrollTrainOp, mouseScrollBtnOp);
+  heroTrain.style.opacity = trainOp;
+  heroTrain.style.pointerEvents = trainOp === 0 ? 'none' : '';
+  if (heroScrollBtn) {
+    heroScrollBtn.style.opacity = btnOp;
+    heroScrollBtn.style.pointerEvents = btnOp === 0 ? 'none' : '';
+  }
+}
+
+window.addEventListener('scroll', function() {
+  var vh = window.innerHeight;
+  var fadeStart = vh * 0.85;
+  var fadeEnd   = vh * 1.05;
+  var t = Math.max(0, Math.min(1, (window.scrollY - fadeStart) / (fadeEnd - fadeStart)));
+  scene.style.opacity   = 1 - t;
+  scrollTrainOp = 1 - t;
+  applyBottomOp();
+}, { passive: true });
+
+
+// ── PROJECT OVERLAY ──────────────────────────────────────────────────────────
+
+function openProject(index) {
+  var p = projects[index];
+
+  var gallery = document.getElementById('overlayGallery');
+  gallery.innerHTML = '';
+
+  if (p.images.length === 0) {
+    gallery.innerHTML =
+      '<div class="overlay-empty">' +
+        '<p>No images yet.<br>' +
+        'Add file paths to the images array<br>' +
+        'for <strong>' + p.title + '</strong> in the projects data.</p>' +
+      '</div>';
+  } else {
+    p.images.forEach(function(src, i) {
+      var item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.innerHTML = '<img src="' + src + '" alt="' + p.title + ' — image ' + (i + 1) + '" loading="lazy">';
+      item.addEventListener('click', function() { openLightbox(p.images, i); });
+      gallery.appendChild(item);
+    });
+  }
+
+  var overlay = document.getElementById('projectOverlay');
+  overlay.classList.add('open');
+  overlay.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProject() {
+  document.getElementById('projectOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+
+// ── CREDITS ──────────────────────────────────────────────────────────────────
+
+function openCredits() {
+  var overlay = document.getElementById('creditsOverlay');
+  overlay.classList.add('open');
+  overlay.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCredits() {
+  document.getElementById('creditsOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+
+// ── LIGHTBOX ─────────────────────────────────────────────────────────────────
+
+var lbImages  = [];
+var lbCurrent = 0;
+
+function openLightbox(images, index) {
+  lbImages  = images;
+  lbCurrent = index;
+  renderLightbox();
+  document.getElementById('lightbox').classList.add('open');
+}
+
+function renderLightbox() {
+  document.getElementById('lbImg').src             = lbImages[lbCurrent];
+  document.getElementById('lbCounter').textContent = (lbCurrent + 1) + ' / ' + lbImages.length;
+}
+
+function lbPrev() { lbCurrent = (lbCurrent - 1 + lbImages.length) % lbImages.length; renderLightbox(); }
+function lbNext() { lbCurrent = (lbCurrent + 1)                   % lbImages.length; renderLightbox(); }
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+function handleLightboxBgClick(e) { if (e.target === document.getElementById('lightbox')) closeLightbox(); }
+
+
+// ── KEYBOARD ─────────────────────────────────────────────────────────────────
+
+document.addEventListener('keydown', function(e) {
+  var lb      = document.getElementById('lightbox');
+  var overlay = document.getElementById('projectOverlay');
+  var credits = document.getElementById('creditsOverlay');
+  var menu    = document.getElementById('mobileMenu');
+
+  if (lb.classList.contains('open')) {
+    if (e.key === 'ArrowLeft')  lbPrev();
+    if (e.key === 'ArrowRight') lbNext();
+    if (e.key === 'Escape')     closeLightbox();
+  } else if (overlay.classList.contains('open')) {
+    if (e.key === 'Escape') closeProject();
+  } else if (credits.classList.contains('open')) {
+    if (e.key === 'Escape') closeCredits();
+  } else if (menu.classList.contains('open')) {
+    if (e.key === 'Escape') closeMenu();
+  }
+});
+
+// ── ABOUT COLLAGE SCROLL REVEAL ──────────────────────────────────────────────
+
+(function () {
+  var collage = document.querySelector('.about-collage');
+  if (!collage) return;
+
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        collage.classList.add('in-view');
+        obs.unobserve(collage);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  obs.observe(collage);
+})();
+
+
+/* ── FILM SCRUBBER (inactive — elements not in DOM) ── */
+(function() {
+  var viewport  = document.getElementById('filmViewport');
+  var track     = document.getElementById('filmTrack');
+  var infoTitle = document.getElementById('filmInfoTitle');
+  var infoMeta  = document.getElementById('filmInfoMeta');
+
+  if (!viewport || !track) return;
+
+  var FRAME_W   = 140;
+  var FRAME_GAP = 10;
+  var STEP      = FRAME_W + FRAME_GAP;
+
+  projects.forEach(function(p, i) {
+    var frame = document.createElement('div');
+    frame.className = 'film-frame';
+    frame.dataset.index = i;
+
+    var num = document.createElement('span');
+    num.className = 'film-frame-num';
+    num.textContent = String(i + 1).padStart(2, '0');
+
+    var img = document.createElement('div');
+    img.className = 'film-frame-img';
+    if (p.cover) {
+      img.style.backgroundImage    = 'url(' + p.cover + ')';
+      img.style.backgroundSize     = 'cover';
+      img.style.backgroundPosition = 'center';
+    } else {
+      img.style.background = '#222';
+    }
+
+    var overlay = document.createElement('div');
+    overlay.className = 'film-frame-overlay';
+    var ftitle = document.createElement('div');
+    ftitle.className = 'film-frame-title';
+    ftitle.textContent = p.title;
+    var fcat = document.createElement('div');
+    fcat.className = 'film-frame-cat';
+    fcat.textContent = p.category;
+    overlay.appendChild(ftitle);
+    overlay.appendChild(fcat);
+    img.appendChild(overlay);
+    frame.appendChild(num);
+    frame.appendChild(img);
+    frame.addEventListener('click', function() { snapTo(i, true); openProject(i); });
+    track.appendChild(frame);
+  });
+
+  var currentIdx = 0;
+  var offset     = 0;
+
+  function clampOffset(o) {
+    return Math.max(centerOffset(projects.length - 1), Math.min(centerOffset(0), o));
+  }
+  function centerOffset(idx) {
+    return (viewport.offsetWidth / 2) - (idx * STEP) - (FRAME_W / 2);
+  }
+  function snapTo(idx, animate) {
+    idx = Math.max(0, Math.min(projects.length - 1, idx));
+    currentIdx = idx;
+    offset = centerOffset(idx);
+    track.style.transition = animate ? 'transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94)' : 'none';
+    track.style.transform  = 'translateX(' + offset + 'px)';
+    updateFrameStates();
+    updateInfo();
+  }
+  function updateFrameStates() {
+    track.querySelectorAll('.film-frame').forEach(function(f, i) {
+      var dist = Math.abs(i - currentIdx);
+      f.classList.toggle('active', dist === 0);
+      f.style.opacity = dist === 0 ? '1' : Math.max(0.12, 1 - dist * 0.25).toString();
+    });
+  }
+  function updateInfo() {
+    var p = projects[currentIdx];
+    if (!p) return;
+    infoTitle.textContent = p.title;
+    infoMeta.textContent  = p.category + '  ·  ' + p.year;
+  }
+
+  var dragging = false, startX = 0, startOff = 0, lastX = 0, lastT = 0, velocity = 0;
+  function onDragStart(x) {
+    dragging = true; startX = x; startOff = offset; lastX = x; lastT = Date.now(); velocity = 0;
+    track.style.transition = 'none'; viewport.style.cursor = 'grabbing';
+  }
+  function onDragMove(x) {
+    if (!dragging) return;
+    var now = Date.now(), dt = now - lastT || 1;
+    velocity = (x - lastX) / dt; lastX = x; lastT = now;
+    offset = clampOffset(startOff + (x - startX));
+    track.style.transform = 'translateX(' + offset + 'px)';
+    var nearest = Math.round((-offset + viewport.offsetWidth / 2 - FRAME_W / 2) / STEP);
+    nearest = Math.max(0, Math.min(projects.length - 1, nearest));
+    if (nearest !== currentIdx) { currentIdx = nearest; updateFrameStates(); updateInfo(); }
+  }
+  function onDragEnd() {
+    if (!dragging) return;
+    dragging = false; viewport.style.cursor = 'grab';
+    var projected = offset + velocity * 250;
+    snapTo(Math.round((-projected + viewport.offsetWidth / 2 - FRAME_W / 2) / STEP), true);
+  }
+
+  viewport.addEventListener('mousedown', function(e) { e.preventDefault(); onDragStart(e.clientX); });
+  window.addEventListener('mousemove',   function(e) { onDragMove(e.clientX); });
+  window.addEventListener('mouseup',     function()  { onDragEnd(); });
+  viewport.addEventListener('touchstart', function(e) { onDragStart(e.touches[0].clientX); }, { passive: true });
+  viewport.addEventListener('touchmove',  function(e) { onDragMove(e.touches[0].clientX);  }, { passive: true });
+  viewport.addEventListener('touchend',   function()  { onDragEnd(); });
+
+  snapTo(0, false);
+})();
+
+</script>
+</body>
+</html>

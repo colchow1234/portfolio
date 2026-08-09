@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photos — Colin Chow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #fff;
+      color: #000;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 500;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 22px 32px 0;
+    }
+    .nav-back {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #000;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .nav-back:hover { opacity: 0.45; }
+    .nav-brand {
+      text-decoration: none;
+    }
+    .nav-brand img {
+      height: 84px;
+      width: auto;
+      display: block;
+      margin-top: -14px;
+    }
+
+    main {
+      padding: 140px 32px 80px;
+    }
+    h1 {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+      opacity: 0.4;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2px;
+    }
+    .placeholder {
+      aspect-ratio: 16 / 9;
+      background: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-back">← Back</a>
+  <a href="index.html" class="nav-brand"><img src="yuh.png" alt="Colin Chow"></a>
+  <span></span>
+</nav>
+
+<main>
+  <h1>Photos</h1>
+  <div class="grid">
+    <!-- Add film project cards here -->
+  </div>
+</main>
+
+</body>
+</html>
