@@ -1,9 +1,11 @@
 {
   "redirects": [
     { "source": "/", "destination": "/home", "permanent": true },
-    { "source": "/index.html", "destination": "/home", "permanent": true }
+    { "source": "/index.html", "destination": "/home", "permanent": true },
+    { "source": "/credits.html", "destination": "/credits", "permanent": true }
   ],
   "rewrites": [
-    { "source": "/home", "destination": "/index.html" }
+    { "source": "/home", "destination": "/index.html" },
+    { "source": "/credits", "destination": "/credits.html" }
   ]
 }

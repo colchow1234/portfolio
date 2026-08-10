@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NBA Finals Behind the Scenes — Colin Chow</title>
+  <title>Film Credits — Colin Chow</title>
+  <link rel="icon" type="image/png" href="yuh.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;500&display=swap" rel="stylesheet">
@@ -163,68 +165,68 @@
       font-family: 'IBM Plex Mono', monospace;
     }
 
-    /* ── PROJECT HEADER ── */
-    .project-header {
-      padding: 130px 60px 40px;
-    }
-    .project-title {
+    /* ── CREDITS ── */
+    .credits-header { padding: 130px 40px 0; }
+    .credits-page-title {
       font-family: Helvetica, Arial, sans-serif;
-      font-size: 41px;
       font-weight: 700;
-      letter-spacing: normal;
-      line-height: 30px;
       text-transform: uppercase;
-      color: #1c1c1c;
-      margin-bottom: 20px;
-    }
-    .project-body {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-    }
-    .project-desc {
-      flex: 1;
-      font-family: Helvetica, Arial, sans-serif;
-      font-size: 9px;
-      font-weight: 400;
+      line-height: 1;
       letter-spacing: normal;
-      line-height: 12px;
-      text-transform: uppercase;
-      text-align: left;
       color: #1c1c1c;
+      font-size: clamp(2.4rem, 6.4vw, 7.2vw);
+      margin-bottom: 64px;
     }
-    .project-meta {
-      flex: 1;
-      text-align: right;
-    }
-    .meta-row {
-      font-family: Helvetica, Arial, sans-serif;
-      font-size: 11px;
-      letter-spacing: normal;
-      text-transform: uppercase;
-      line-height: 12px;
-      margin: 0;
-      white-space: nowrap;
-      color: #1c1c1c;
-    }
-    .meta-key { font-weight: 700; }
-    .meta-val { font-weight: 400; }
 
-    /* ── GALLERY ── */
-    .gallery {
-      padding: 0 60px 100px;
-      margin-top: -10px;
-      overflow: hidden;
+    .credits-list { padding: 0 40px 80px; }
+
+    .credit-project {
+      border-top: 1px solid #000;
+      padding: 28px 0;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: start;
+    }
+    .credit-project:last-child { border-bottom: 1px solid #000; }
+
+    .credit-left {}
+    .credit-project-title {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      text-transform: lowercase;
+      margin-bottom: 10px;
+    }
+    .credit-roles {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px 16px;
     }
-    .gallery img {
-      display: block;
-      object-fit: cover;
-      max-width: 100%;
-      height: 220px;
-      width: auto;
+    .credit-role {
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.5;
+    }
+    .credit-role::before { content: '— '; }
+
+    .credit-right { text-align: right; }
+    .credit-year {
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      opacity: 0.4;
+    }
+    .credit-category {
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.3;
+      margin-top: 4px;
     }
 
     /* ── FOOTER ── */
@@ -250,12 +252,11 @@
       .nav-left { display: none; }
       .nav-right { display: none; }
       .hamburger { display: flex; }
-      .project-header { padding: 72px 24px 48px; }
-      .project-title { font-size: 26px; line-height: 19px; margin-bottom: 14px; }
-      .project-body { flex-direction: column; gap: 32px; }
-      .project-desc { max-width: 100%; }
-      .project-meta { text-align: left; }
-      .gallery { padding: 0 24px 60px; }
+      .credits-header { padding: 96px 24px 0; }
+      .credits-list   { padding: 0 24px 64px; }
+      .credit-project { grid-template-columns: 1fr; gap: 8px; }
+      .credit-right   { text-align: left; }
+      .credit-project-title { font-size: 22px; }
       footer  { padding: 0 24px 40px; margin-top: 64px; }
     }
   </style>
@@ -293,31 +294,11 @@
   <a href="/credits"     onclick="closeMenu()">Credits</a>
 </div>
 
-<!-- ── PROJECT CONTENT ── -->
-<div class="project-header">
-  <h1 class="project-title">NBA Finals Behind the Scenes</h1>
-  <div class="project-body">
-    <p class="project-desc">
-      Description coming soon.
-    </p>
-    <div class="project-meta">
-      <p class="meta-row">
-        <span class="meta-key">Deliverables</span>: <span class="meta-val">Photography</span>
-      </p>
-      <p class="meta-row">
-        <span class="meta-key">Role</span>: <span class="meta-val">Creative Direction</span>
-      </p>
-    </div>
-  </div>
+<!-- ── CREDITS CONTENT ── -->
+<div class="credits-header">
+  <h1 class="credits-page-title">Film<br>Credits</h1>
 </div>
-
-<div class="gallery">
-  <img src="espn/10111.jpg"           alt="ESPN" loading="eager">
-  <img src="espn/10113.jpg"           alt="ESPN" loading="eager">
-  <img src="espn/222.jpg"             alt="ESPN" loading="eager">
-  <img src="espn/888.jpg"             alt="ESPN" loading="eager">
-  <img src="espn/DSC06165%20copy.jpg" alt="ESPN" loading="eager">
-</div>
+<div class="credits-list" id="creditsList"></div>
 
 <footer id="contact">
   <hr>
@@ -363,94 +344,86 @@
     }, { passive: true });
   })();
 
-  // ── JUSTIFIED ROW GALLERY ──
-  (function () {
-    var gallery = document.querySelector('.gallery');
-    if (!gallery) return;
+  // ── CREDITS DATA ──
+  var filmCredits = [
+    {
+      title:    'Two Man',
+      year:     2025,
+      category: 'Narrative',
+      roles:    ['Director', 'Director of Photography'],
+    },
+    {
+      title:    'TVB Music Video',
+      year:     2026,
+      category: 'Music Video',
+      roles:    ['Director', 'Director of Photography', 'Editor'],
+    },
+    {
+      title:    'Tally',
+      year:     2026,
+      category: 'Short Film',
+      roles:    ['Director', 'Director of Photography', 'Editor'],
+    },
+    {
+      title:    'Left Behind',
+      year:     2026,
+      category: 'Short Film',
+      roles:    ['Director of Photography', 'Colorist'],
+    },
+    {
+      title:    'Is This Okay?',
+      year:     2026,
+      category: 'Narrative',
+      roles:    ['Director of Photography', 'Production Assistant'],
+    },
+    {
+      title:    'American Standard',
+      year:     '2025–2026',
+      category: 'TV Series',
+      roles:    ['Campaign Photographer', 'Grip', 'Production Assistant'],
+    },
+    {
+      title:    'Halo',
+      year:     2026,
+      category: 'Dance Film',
+      roles:    ['Campaign Photographer'],
+    },
+    {
+      title:    'Done Time',
+      year:     2025,
+      category: 'Dance Film',
+      roles:    ['Campaign Photographer'],
+    },
+    {
+      title:    'Ruin',
+      year:     2026,
+      category: 'Short Film',
+      roles:    ['Key Grip'],
+    },
+  ];
 
-    var imgs = Array.from(gallery.querySelectorAll('img'));
-    if (!imgs.length) return;
+  // ── BUILD CREDITS LIST ──
+  var creditsList = document.getElementById('creditsList');
 
-    var GAP = 8;
-    var MAX_PER_ROW = 4;
+  filmCredits.forEach(function(c) {
+    var rolesHtml = c.roles.map(function(r) {
+      return '<span class="credit-role">' + r + '</span>';
+    }).join('');
 
-    // Desktop: 3-2 grouping — row 1: 10113, 222, DSC06165; row 2: 10111, 888
-    var DESKTOP_GROUPS = [[1,2,4], [0,3]];
+    var item = document.createElement('div');
+    item.className = 'credit-project';
+    item.innerHTML =
+      '<div class="credit-left">' +
+        '<p class="credit-project-title">' + c.title + '</p>' +
+        '<div class="credit-roles">' + rolesHtml + '</div>' +
+      '</div>' +
+      '<div class="credit-right">' +
+        '<p class="credit-year">' + c.year + '</p>' +
+        '<p class="credit-category">' + c.category + '</p>' +
+      '</div>';
 
-    function layout() {
-      var cs = window.getComputedStyle(gallery);
-      var W  = gallery.clientWidth
-                 - parseFloat(cs.paddingLeft)
-                 - parseFloat(cs.paddingRight);
-
-      var aspects = imgs.map(function (img) {
-        var ar = img.naturalWidth / img.naturalHeight;
-        return (ar > 0 && isFinite(ar)) ? ar : 3 / 2;
-      });
-
-      var groups;
-      if (window.innerWidth > 900) {
-        groups = DESKTOP_GROUPS;
-      } else {
-        // Responsive fallback: greedy packing, capped at MAX_PER_ROW images per row
-        var TH = window.innerWidth <= 480 ? 160 : 220;
-        groups = [];
-        var i = 0;
-        while (i < imgs.length) {
-          var j = i, sum = 0;
-          while (j < imgs.length && (j - i) < MAX_PER_ROW) {
-            sum += aspects[j];
-            j++;
-            if (sum * TH + GAP * (j - i - 1) >= W) break;
-          }
-          var g = [];
-          for (var k = i; k < j; k++) g.push(k);
-          groups.push(g);
-          i = j;
-        }
-      }
-
-      gallery.innerHTML = '';
-
-      groups.forEach(function (group, ri) {
-        var n          = group.length;
-        var sumAspects = group.reduce(function (s, k) { return s + aspects[k]; }, 0);
-        var H          = (W - GAP * (n - 1)) / sumAspects;
-
-        var rowEl = document.createElement('div');
-        rowEl.style.display = 'flex';
-        rowEl.style.gap     = GAP + 'px';
-        if (ri < groups.length - 1) rowEl.style.marginBottom = GAP + 'px';
-
-        group.forEach(function (k) {
-          var img = imgs[k];
-          img.style.width      = (H * aspects[k]) + 'px';
-          img.style.height     = H + 'px';
-          img.style.flexShrink = '0';
-          rowEl.appendChild(img);
-        });
-
-        gallery.appendChild(rowEl);
-      });
-    }
-
-    var pending = imgs.length;
-    function tick() { if (--pending <= 0) layout(); }
-    imgs.forEach(function (img) {
-      if (img.complete && img.naturalWidth > 0) {
-        tick();
-      } else {
-        img.addEventListener('load', tick);
-        img.addEventListener('error', tick);
-      }
-    });
-
-    var resizeTimer;
-    window.addEventListener('resize', function () {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(layout, 80);
-    });
-  })();
+    creditsList.appendChild(item);
+  });
 </script>
 </body>
 </html>

@@ -46,7 +46,7 @@
       gap: 28px;
       list-style: none;
     }
-    .nav-left button {
+    .nav-left button, .nav-left a {
       background: none;
       border: none;
       cursor: pointer;
@@ -56,9 +56,10 @@
       text-transform: uppercase;
       color: #000;
       padding: 0;
+      text-decoration: none;
       transition: opacity 0.2s;
     }
-    .nav-left button:hover { font-weight: 700; }
+    .nav-left button:hover, .nav-left a:hover { font-weight: 700; }
 
     .nav-brand {
       text-decoration: none;
@@ -152,7 +153,7 @@
       cursor: pointer;
       line-height: 1;
     }
-    .mobile-menu button {
+    .mobile-menu button, .mobile-menu a {
       background: none;
       border: none;
       color: #fff;
@@ -161,6 +162,7 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       cursor: pointer;
+      text-decoration: none;
     }
 
     /* ── HERO (pinwheel) ── */
@@ -816,78 +818,6 @@
       line-height: 1.9;
     }
 
-    /* ── CREDITS PAGE ── */
-    .credits-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 150;
-      background: #fff;
-      overflow-y: auto;
-    }
-    .credits-overlay.open { display: block; }
-
-    .credits-header { padding: 56px 40px 0; }
-    .credits-page-title {
-      font-family: 'IBM Plex Mono', monospace;
-      font-weight: 500;
-      text-transform: uppercase;
-      line-height: 1;
-      letter-spacing: -0.02em;
-      font-size: clamp(3rem, 8vw, 9vw);
-      margin-bottom: 64px;
-    }
-
-    .credits-list { padding: 0 40px 80px; }
-
-    .credit-project {
-      border-top: 1px solid #000;
-      padding: 28px 0;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 24px;
-      align-items: start;
-    }
-    .credit-project:last-child { border-bottom: 1px solid #000; }
-
-    .credit-left {}
-    .credit-project-title {
-      font-size: 14px;
-      font-weight: 400;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-    .credit-roles {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px 16px;
-    }
-    .credit-role {
-      font-size: 11px;
-      font-weight: 300;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      opacity: 0.5;
-    }
-    .credit-role::before { content: '— '; }
-
-    .credit-right { text-align: right; }
-    .credit-year {
-      font-size: 11px;
-      font-weight: 300;
-      letter-spacing: 0.15em;
-      opacity: 0.4;
-    }
-    .credit-category {
-      font-size: 10px;
-      font-weight: 300;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      opacity: 0.3;
-      margin-top: 4px;
-    }
-
     /* ── LIGHTBOX ── */
     .lightbox {
       display: none;
@@ -977,11 +907,6 @@
       .overlay-gallery { columns: 1; padding: 0 24px; }
       .overlay-empty  { padding: 64px 24px; }
 
-      .credits-header { padding: 40px 24px 0; }
-      .credits-list   { padding: 0 24px 64px; }
-      .credit-project { grid-template-columns: 1fr; gap: 8px; }
-      .credit-right   { text-align: left; }
-
       .lb-wrap { padding: 0 52px; }
       #lbPrev { left: 8px; }
       #lbNext { right: 8px; }
@@ -1001,7 +926,7 @@
   <ul class="nav-left">
     <li><button onclick="scrollToSection('work')">Work</button></li>
     <li><button onclick="scrollToSection('about')">About</button></li>
-    <li><button onclick="openCredits()">Credits</button></li>
+    <li><a href="/credits">Credits</a></li>
   </ul>
 
   <a href="#" class="nav-brand"><img src="yuh.png" alt="Colin Chow"></a>
@@ -1024,7 +949,7 @@
   <button class="mobile-close" onclick="closeMenu()" aria-label="Close">×</button>
   <button onclick="scrollTo('work');   closeMenu()">Work</button>
   <button onclick="scrollTo('about');  closeMenu()">About</button>
-  <button onclick="openCredits();      closeMenu()">Credits</button>
+  <a href="/credits" onclick="closeMenu()">Credits</a>
   <button onclick="scrollToSection('contact');closeMenu()">Contact</button>
 </div>
 
@@ -1198,17 +1123,6 @@
   <div style="height:80px"></div>
 </div>
 
-<!-- ── CREDITS PAGE ───────────────────────────────── -->
-<div class="credits-overlay" id="creditsOverlay">
-  <div class="overlay-nav">
-    <button class="overlay-back" onclick="closeCredits()">← Back</button>
-  </div>
-  <div class="credits-header">
-    <h2 class="credits-page-title">Film<br>Credits</h2>
-  </div>
-  <div class="credits-list" id="creditsList"></div>
-</div>
-
 <!-- ── LIGHTBOX ───────────────────────────────────── -->
 <div class="lightbox" id="lightbox" onclick="handleLightboxBgClick(event)">
   <button class="lb-btn" id="lbPrev" onclick="lbPrev()" aria-label="Previous">←</button>
@@ -1247,54 +1161,6 @@ var projects = [
 ];
 
 
-// ── CREDITS DATA ─────────────────────────────────────────────────────────────
-
-var filmCredits = [
-  {
-    title:    'Prototype',
-    year:     2025,
-    category: 'Short Film',
-    roles:    ['Director', 'Director of Photography', 'Editor'],
-  },
-  {
-    title:    'Experimental Spec Ad',
-    year:     2024,
-    category: 'Commercial',
-    roles:    ['Director', 'Director of Photography'],
-  },
-  {
-    title:    'CCYA Celebrity Basketball',
-    year:     2024,
-    category: 'Event Coverage',
-    roles:    ['Director', 'Director of Photography', 'Editor'],
-  },
-  {
-    title:    'Lilie Athletica',
-    year:     2024,
-    category: 'Branded Content',
-    roles:    ['Director', 'Director of Photography'],
-  },
-  {
-    title:    'Cal @ Stanford',
-    year:     2024,
-    category: 'Sports Photography',
-    roles:    ['Photographer'],
-  },
-  {
-    title:    'InDesign Coverage',
-    year:     2023,
-    category: 'Event Coverage',
-    roles:    ['Director of Photography', 'Editor'],
-  },
-  {
-    title:    'Freelance Automotive',
-    year:     2023,
-    category: 'Photography',
-    roles:    ['Photographer'],
-  },
-];
-
-
 // ── BUILD WORK GRID ──────────────────────────────────────────────────────────
 
 var grid = document.getElementById('workGrid');
@@ -1324,31 +1190,6 @@ projects.forEach(function(p, i) {
     : '<button class="project-card" onclick="openProject(' + i + ')" aria-label="View ' + p.title + '">' + inner + '</button>';
 
   grid.appendChild(wrap);
-});
-
-
-// ── BUILD CREDITS LIST ───────────────────────────────────────────────────────
-
-var creditsList = document.getElementById('creditsList');
-
-filmCredits.forEach(function(c) {
-  var rolesHtml = c.roles.map(function(r) {
-    return '<span class="credit-role">' + r + '</span>';
-  }).join('');
-
-  var item = document.createElement('div');
-  item.className = 'credit-project';
-  item.innerHTML =
-    '<div class="credit-left">' +
-      '<p class="credit-project-title">' + c.title + '</p>' +
-      '<div class="credit-roles">' + rolesHtml + '</div>' +
-    '</div>' +
-    '<div class="credit-right">' +
-      '<p class="credit-year">' + c.year + '</p>' +
-      '<p class="credit-category">' + c.category + '</p>' +
-    '</div>';
-
-  creditsList.appendChild(item);
 });
 
 
@@ -1712,21 +1553,6 @@ function closeProject() {
 }
 
 
-// ── CREDITS ──────────────────────────────────────────────────────────────────
-
-function openCredits() {
-  var overlay = document.getElementById('creditsOverlay');
-  overlay.classList.add('open');
-  overlay.scrollTop = 0;
-  document.body.style.overflow = 'hidden';
-}
-
-function closeCredits() {
-  document.getElementById('creditsOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-
 // ── LIGHTBOX ─────────────────────────────────────────────────────────────────
 
 var lbImages  = [];
@@ -1755,7 +1581,6 @@ function handleLightboxBgClick(e) { if (e.target === document.getElementById('li
 document.addEventListener('keydown', function(e) {
   var lb      = document.getElementById('lightbox');
   var overlay = document.getElementById('projectOverlay');
-  var credits = document.getElementById('creditsOverlay');
   var menu    = document.getElementById('mobileMenu');
 
   if (lb.classList.contains('open')) {
@@ -1764,8 +1589,6 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape')     closeLightbox();
   } else if (overlay.classList.contains('open')) {
     if (e.key === 'Escape') closeProject();
-  } else if (credits.classList.contains('open')) {
-    if (e.key === 'Escape') closeCredits();
   } else if (menu.classList.contains('open')) {
     if (e.key === 'Escape') closeMenu();
   }
