@@ -1408,8 +1408,15 @@ const PROJECT_IMAGES = [
   'hero stacks/COLIN CHOW FINAL_2_compressed.mp4',
   'hero stacks/FINALDRAFT copy (1) (1).mp4',
   'hero stacks/tunisia 2_compressed.mp4',
-  'hero stacks/story.mov',
+  'hero stacks/story.mp4',
 ];
+
+function posterPathFor(src) {
+  const parts = src.split('/');
+  const file  = parts.pop();
+  const base  = file.replace(/\.[^.]+$/, '');
+  return parts.join('/') + '/posters/' + base + '.jpg';
+}
 
 const n = PROJECT_IMAGES.length;
 const LEN = 300;
@@ -1420,13 +1427,104 @@ const rig     = document.getElementById('rig');
 const tiltRig = document.getElementById('tilt-rig');
 const scene   = document.getElementById('scene');
 
-function makeVid(src, mirror) {
-  const v = document.createElement('video');
-  v.src = src; v.autoplay = true; v.muted = true; v.loop = true;
-  v.setAttribute('playsinline', '');
-  v.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;'
+// ── LAZY VIDEO LOADING ──────────────────────────────────────────
+// Petals show a poster image immediately; the real video is only
+// fetched/played once the petal spins near the front of the rig.
+// Once loaded, a petal stays loaded (no re-buffering on re-entry),
+// and only a few clips load concurrently to avoid a bandwidth spike.
+
+const SPIN_DURATION_MS  = 24000; // matches @keyframes pinwheel-spin
+const FRONT_WINDOW_DEG  = 70;    // ± window around 0° counted as "front-facing"
+const MAX_CONCURRENT_LOADS = 4;
+const CHECK_INTERVAL_MS = 250;
+
+const spinStartTime = performance.now();
+
+function getCurrentRigAngle() {
+  const elapsed = performance.now() - spinStartTime;
+  return (elapsed % SPIN_DURATION_MS) / SPIN_DURATION_MS * 360;
+}
+
+function angularDistance(a, b) {
+  const d = Math.abs(a - b) % 360;
+  return d > 180 ? 360 - d : d;
+}
+
+const petals = [];
+let activeLoads = 0;
+const loadQueue = [];
+
+function startLoad(petal) {
+  petal.loading = true;
+  activeLoads++;
+
+  let remaining = petal.videoEls.length;
+  let settled = false;
+  const settle = () => {
+    if (settled) return;
+    settled = true;
+    petal.loaded  = true;
+    petal.loading = false;
+    activeLoads--;
+    processQueue();
+  };
+  petal.videoEls.forEach(v => {
+    const onReady = () => {
+      v.removeEventListener('loadeddata', onReady);
+      v.removeEventListener('error', onError);
+      v.style.opacity = '1';
+      v.play().catch(() => {});
+      remaining--;
+      if (remaining === 0) settle();
+    };
+    const onError = () => {
+      v.removeEventListener('loadeddata', onReady);
+      v.removeEventListener('error', onError);
+      remaining--;
+      if (remaining === 0) settle();
+    };
+    v.addEventListener('loadeddata', onReady);
+    v.addEventListener('error', onError);
+    v.src = v.dataset.src;
+    v.load();
+  });
+}
+
+function processQueue() {
+  while (activeLoads < MAX_CONCURRENT_LOADS && loadQueue.length > 0) {
+    const petal = loadQueue.shift();
+    if (petal.loaded || petal.loading) continue;
+    startLoad(petal);
+  }
+}
+
+function checkPetals() {
+  const rigAngle = getCurrentRigAngle();
+  petals.forEach(petal => {
+    if (petal.loaded || petal.loading || petal.queued) return;
+    const effectiveAngle = (petal.baseAngle + rigAngle) % 360;
+    if (angularDistance(effectiveAngle, 0) <= FRONT_WINDOW_DEG) {
+      petal.queued = true;
+      loadQueue.push(petal);
+    }
+  });
+  processQueue();
+}
+
+function makePetalMedia(src, mirror) {
+  const img = document.createElement('img');
+  img.src = posterPathFor(src);
+  img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;'
     + (mirror ? 'transform:scaleX(-1);' : '');
-  return v;
+
+  const v = document.createElement('video');
+  v.dataset.src = src;
+  v.muted = true; v.loop = true; v.preload = 'none';
+  v.setAttribute('playsinline', '');
+  v.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;opacity:0;transition:opacity 250ms ease;'
+    + (mirror ? 'transform:scaleX(-1);' : '');
+
+  return { img, v };
 }
 
 PROJECT_IMAGES.forEach((imgSrc, i) => {
@@ -1451,6 +1549,7 @@ PROJECT_IMAGES.forEach((imgSrc, i) => {
     transform-style: preserve-3d;
   `;
 
+  const frontMedia = makePetalMedia(imgSrc, false);
   const front = document.createElement('div');
   front.className = 'petal';
   front.style.cssText = `
@@ -1458,8 +1557,10 @@ PROJECT_IMAGES.forEach((imgSrc, i) => {
     transform: translateZ(${THICK / 2}px);
     box-shadow: 2px 4px 24px rgba(0,0,0,0.12);
   `;
-  front.appendChild(makeVid(imgSrc, false));
+  front.appendChild(frontMedia.img);
+  front.appendChild(frontMedia.v);
 
+  const backMedia = makePetalMedia(imgSrc, true);
   const back = document.createElement('div');
   back.className = 'petal';
   back.style.cssText = `
@@ -1467,13 +1568,25 @@ PROJECT_IMAGES.forEach((imgSrc, i) => {
     filter: brightness(0.55);
     transform: translateZ(-${THICK / 2}px) rotateY(180deg);
   `;
-  back.appendChild(makeVid(imgSrc, true));
+  back.appendChild(backMedia.img);
+  back.appendChild(backMedia.v);
 
   inner.appendChild(back);
   inner.appendChild(front);
   wrap.appendChild(inner);
   rig.appendChild(wrap);
+
+  petals.push({
+    baseAngle,
+    videoEls: [frontMedia.v, backMedia.v],
+    loaded: false,
+    loading: false,
+    queued: false,
+  });
 });
+
+checkPetals();
+setInterval(checkPetals, CHECK_INTERVAL_MS);
 
 // ── ROTATION LOGIC ───────────────────────────────────────────
 // Spin is a CSS animation on #rig (GPU compositor — constant speed).
