@@ -11,6 +11,7 @@ PORT = 8000
 REWRITES = {
     '/home': '/index.html',
     '/credits': '/credits.html',
+    '/sketchbook': '/sketchbook.html',
 }
 
 class Handler(http.server.SimpleHTTPRequestHandler):

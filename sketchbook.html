@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sketchbook — Colin Chow</title>
+  <link rel="icon" type="image/png" href="yuh.png">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { overflow-x: hidden; }
+
+    :root {
+      --sk-blue: #1a35e3;
+      --sk-line: rgba(255,255,255,0.16);
+      --sk-line-strong: rgba(255,255,255,0.32);
+    }
+
+    body {
+      background: var(--sk-blue);
+      color: #fff;
+      font-family: Helvetica, Arial, sans-serif;
+      font-weight: 700;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── BLUEPRINT BACKDROP ── */
+    .blueprint {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 18px 32px 22px;
+      background-image:
+        repeating-linear-gradient(0deg,  var(--sk-line) 0 1px, transparent 1px 96px),
+        repeating-linear-gradient(90deg, var(--sk-line) 0 1px, transparent 1px 96px),
+        repeating-linear-gradient(0deg,  rgba(255,255,255,0.06) 0 1px, transparent 1px 24px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0 1px, transparent 1px 24px);
+      overflow: hidden;
+    }
+
+    /* bottom ruler ticks */
+    .ruler-bottom {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 26px;
+      background-image: repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,0.35) 0px, rgba(255,255,255,0.35) 1px,
+        transparent 1px, transparent 8px
+      );
+      background-position: bottom;
+      background-size: 100% 10px;
+      background-repeat: repeat-x;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    /* decorative angle lines */
+    .angle-lines { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .angle-line {
+      position: absolute;
+      left: 2%;
+      bottom: -10%;
+      width: 1px;
+      height: 160%;
+      background: var(--sk-line-strong);
+      transform-origin: bottom left;
+    }
+    .angle-line.a1 { transform: rotate(-75deg); }
+    .angle-line.a2 { transform: rotate(-60deg); }
+    .angle-line.a3 { transform: rotate(-45deg); }
+    .angle-line.a4 { left: 6%; transform: rotate(-38deg); opacity: 0.6; }
+    .angle-label {
+      position: absolute;
+      font-family: Helvetica, Arial, sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: -0.01em;
+      color: rgba(255,255,255,0.35);
+      pointer-events: none;
+    }
+    .angle-label.l1 { top: 6%;  left: 40%; }
+    .angle-label.l2 { top: 4%;  left: 72%; }
+    .angle-label.l3 { top: 24%; right: 3%; }
+
+    /* ── TOP ROW ── */
+    .sk-topnav {
+      position: relative;
+      z-index: 5;
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+    .sk-back {
+      color: #fff;
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+      margin-top: 6px;
+    }
+    .sk-back:hover { opacity: 1; }
+
+    .sk-title {
+      font-family: Helvetica, Arial, sans-serif;
+      font-weight: 800;
+      text-transform: lowercase;
+      letter-spacing: -0.03em;
+      font-size: clamp(1.7rem, 4.2vw, 3.4rem);
+      line-height: 1;
+      color: #fff;
+    }
+
+    /* ── LAYOUT ── */
+    .sk-body {
+      position: relative;
+      z-index: 5;
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 4px;
+      margin-top: 18px;
+    }
+
+    .sk-note {
+      font-family: Helvetica, Arial, sans-serif;
+      font-weight: 700;
+      font-size: clamp(9px, 0.8vw, 11px);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      text-transform: lowercase;
+      text-align: right;
+      color: #fff;
+      max-width: 490px;
+      margin: 0 0 12px;
+    }
+
+    /* ── SKETCH CANVAS ── */
+    .sk-canvas-frame {
+      position: relative;
+      width: 100%;
+      max-width: 490px;
+      aspect-ratio: 1 / 1.12;
+      margin: 0;
+      border: 1.5px solid #fff;
+    }
+    .sk-canvas-frame canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+      cursor: crosshair;
+    }
+
+    .sk-toolbar {
+      max-width: 490px;
+      margin: 9px 0 0;
+      display: flex;
+      justify-content: flex-start;
+      gap: 7px;
+    }
+    .sk-tool {
+      width: 27px;
+      height: 27px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.55);
+      border-radius: 50%;
+      cursor: pointer;
+      color: #fff;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    }
+    .sk-tool:hover { border-color: #fff; transform: translateY(-1px); }
+    .sk-tool.active { background: #fff; color: var(--sk-blue); border-color: #fff; }
+    .sk-tool svg { width: 13px; height: 13px; display: block; }
+
+    /* ── JUNKYARD ── */
+    .sk-junkyard {
+      position: relative;
+      padding-top: 2px;
+      height: 100%;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .sk-junk-item {
+      position: relative;
+      width: 68%;
+      display: flex;
+      flex-direction: column;
+      transform: rotate(var(--rot, -2deg));
+    }
+    .sk-junk-item:nth-child(1) { width: 38%; margin-left: 0%; }
+    .sk-junk-item:nth-child(2) { width: 30%; margin-left: 40%; }
+    .sk-junk-item:nth-child(3) { width: 34%; margin-left: 14%; }
+    .sk-junk-frame {
+      aspect-ratio: 16 / 9;
+      background: #0d1230;
+      border: 1px solid rgba(255,255,255,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .sk-junk-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .sk-junk-ph {
+      color: rgba(255,255,255,0.25);
+      font-family: Helvetica, Arial, sans-serif;
+      font-weight: 700;
+      font-size: 9px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .sk-junk-caption {
+      font-family: Helvetica, Arial, sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: lowercase;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-top: 6px;
+      text-align: center;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      .blueprint { height: auto; min-height: 100vh; padding: 24px 20px 80px; }
+      .sk-body { grid-template-columns: 1fr; gap: 56px; margin-top: 32px; height: auto; }
+      .sk-note { max-width: 100%; margin: 0 0 16px; }
+      .sk-canvas-frame { max-width: 100%; }
+      .sk-toolbar { max-width: 100%; }
+      .angle-lines { display: none; }
+      .sk-junkyard { height: auto; display: block; }
+      .sk-junk-item { width: 100% !important; margin-left: 0 !important; margin-bottom: 40px; flex: none; }
+      .sk-junk-frame { flex: none; aspect-ratio: 16 / 9; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="blueprint">
+  <div class="ruler-bottom"></div>
+  <div class="angle-lines">
+    <div class="angle-line a1"></div>
+    <div class="angle-line a2"></div>
+    <div class="angle-line a3"></div>
+    <div class="angle-line a4"></div>
+    <span class="angle-label l1">75°</span>
+    <span class="angle-label l2">60°</span>
+    <span class="angle-label l3">45°</span>
+  </div>
+
+  <div class="sk-topnav">
+    <a href="/home" class="sk-back">← Back</a>
+    <h1 class="sk-title">sketchbook.</h1>
+  </div>
+
+  <div class="sk-body">
+    <div class="sk-left">
+      <p class="sk-note">
+        Designing this site kept me inspired and filled with new ideas, and I hope going
+        through my work could spark some of your own creative ideas. Feel free to sketch
+        what's on your mind, or take a look at some projects I never quite finished.
+      </p>
+
+      <div class="sk-canvas-frame">
+        <canvas id="sketchCanvas"></canvas>
+      </div>
+
+      <div class="sk-toolbar">
+        <button class="sk-tool active" id="toolPen" title="Pen" aria-label="Pen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+        </button>
+        <button class="sk-tool" id="toolEraser" title="Eraser" aria-label="Eraser">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H8l-6-6a2 2 0 0 1 0-2.8L13 2l9 9-6.5 6.5"/><path d="M6 12 13 5"/></svg>
+        </button>
+        <button class="sk-tool" id="toolTrash" title="Clear drawing" aria-label="Clear drawing">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="sk-junkyard">
+      <div class="sk-junk-item" style="--rot: 3.5deg;">
+        <div class="sk-junk-frame"><img src="sketch%20media/july.png" alt="Fourth of July"></div>
+        <p class="sk-junk-caption">fourth of july!</p>
+      </div>
+      <div class="sk-junk-item" style="--rot: -2.5deg;">
+        <div class="sk-junk-frame"><img src="sketch%20media/school.png" alt="School film project"></div>
+        <p class="sk-junk-caption">a film project</p>
+      </div>
+      <div class="sk-junk-item" style="--rot: 2deg;">
+        <div class="sk-junk-frame"><img src="sketch%20media/verci%20video.png" alt="Verci"></div>
+        <p class="sk-junk-caption">an unreleased project</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var canvas = document.getElementById('sketchCanvas');
+    var ctx = canvas.getContext('2d');
+    var frame = canvas.parentElement;
+    var drawing = false;
+    var last = null;
+    var tool = 'pen';
+
+    function sizeCanvas() {
+      var rect = frame.getBoundingClientRect();
+      var dpr = window.devicePixelRatio || 1;
+      canvas.width  = rect.width  * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+    }
+    sizeCanvas();
+    window.addEventListener('resize', sizeCanvas);
+
+    function pos(e) {
+      var rect = canvas.getBoundingClientRect();
+      return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    }
+
+    function strokeTo(p) {
+      ctx.beginPath();
+      if (tool === 'eraser') {
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.lineWidth = 22;
+      } else {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2.5;
+      }
+      ctx.moveTo(last.x, last.y);
+      ctx.lineTo(p.x, p.y);
+      ctx.stroke();
+      last = p;
+    }
+
+    canvas.addEventListener('pointerdown', function (e) {
+      drawing = true;
+      last = pos(e);
+      canvas.setPointerCapture(e.pointerId);
+      strokeTo(last);
+    });
+    canvas.addEventListener('pointermove', function (e) {
+      if (!drawing) return;
+      strokeTo(pos(e));
+    });
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (ev) {
+      canvas.addEventListener(ev, function () { drawing = false; last = null; });
+    });
+
+    var toolPen    = document.getElementById('toolPen');
+    var toolEraser = document.getElementById('toolEraser');
+    var toolTrash  = document.getElementById('toolTrash');
+
+    function setTool(name) {
+      tool = name;
+      toolPen.classList.toggle('active', name === 'pen');
+      toolEraser.classList.toggle('active', name === 'eraser');
+    }
+    toolPen.addEventListener('click', function () { setTool('pen'); });
+    toolEraser.addEventListener('click', function () { setTool('eraser'); });
+    toolTrash.addEventListener('click', function () {
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.restore();
+    });
+  })();
+</script>
+</body>
+</html>

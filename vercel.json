@@ -2,10 +2,12 @@
   "redirects": [
     { "source": "/", "destination": "/home", "permanent": true },
     { "source": "/index.html", "destination": "/home", "permanent": true },
-    { "source": "/credits.html", "destination": "/credits", "permanent": true }
+    { "source": "/credits.html", "destination": "/credits", "permanent": true },
+    { "source": "/sketchbook.html", "destination": "/sketchbook", "permanent": true }
   ],
   "rewrites": [
     { "source": "/home", "destination": "/index.html" },
-    { "source": "/credits", "destination": "/credits.html" }
+    { "source": "/credits", "destination": "/credits.html" },
+    { "source": "/sketchbook", "destination": "/sketchbook.html" }
   ]
 }
