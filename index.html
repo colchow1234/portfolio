@@ -534,29 +534,12 @@
       position: absolute;
       inset: 0;
       z-index: 1;
-      background: #fff;
+      background: #000;
       opacity: 0;
       transition: opacity 300ms ease-out;
       pointer-events: none;
     }
-    .project-card:hover .card-fade { opacity: 0.35; }
-    .card-hover-icon {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      z-index: 2;
-      width: 65%;
-      height: 65%;
-      object-fit: contain;
-      transform: translate(-50%, -50%) scale(0.9);
-      opacity: 0;
-      transition: opacity 300ms ease-out 50ms, transform 300ms ease-out 50ms;
-      pointer-events: none;
-    }
-    /* Icons are assumed black by default (e.g. simple line art) — inverted to
-       white unless the project explicitly opts into rendering it black. */
-    .card-hover-icon--white { filter: brightness(0) invert(1); }
-    .project-card:hover .card-hover-icon { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    .project-card:hover .card-fade { opacity: 0.25; }
     .card-category {
       position: absolute;
       top: 12px; right: 12px;
@@ -1139,25 +1122,34 @@
 // ── PROJECT DATA ─────────────────────────────────────────────────────────────
 
 var projects = [
-  { slug: 'knicks-parade',        title: 'Knicks Parade',            category: 'Event Coverage',     year: 2025, cover: 'knicks%20parade%20coverage/222.JPG', images: [], href: 'knicks-parade.html', hideYear: true },
-  { slug: 'steph-curry',          title: 'Stephen Curry NYU Workout', category: 'Sports Photography', year: 2025, cover: 'steph%20curry/10109.jpg', images: [
-    'steph%20curry/9999.jpg', 'steph%20curry/10109.jpg', 'steph%20curry/333.jpg', 'steph%20curry/666.jpg',
-  ], href: 'steph-curry.html', hideYear: true, hoverIcon: 'thumnail%20graphic/curry.png', hoverIconColor: 'black' },
-  { slug: 'espn',                 title: 'NBA Finals Behind the Scenes', category: 'Event Coverage', year: 2025, cover: 'espn/222.jpg', images: [
-    'espn/10111.jpg', 'espn/10113.jpg', 'espn/222.jpg', 'espn/888.jpg', 'espn/DSC06165%20copy.jpg',
-  ], href: 'espn.html', hideYear: true, hoverIcon: 'thumnail%20graphic/espn.png', hoverIconColor: 'black' },
-  { slug: 'spurs-pregame',        title: 'Spurs Pre-Game Walkout',   category: 'Event Coverage',     year: 2026, cover: 'spurs%20pregame%202026/111.JPG', images: [
-    'spurs%20pregame%202026/111.JPG',      'spurs%20pregame%202026/444.JPG',      'spurs%20pregame%202026/555.JPG',
-    'spurs%20pregame%202026/777.JPG',      'spurs%20pregame%202026/999.JPG',      'spurs%20pregame%202026/10112.JPG',
-    'spurs%20pregame%202026/DSC06250.JPG', 'spurs%20pregame%202026/DSC06357.JPG', 'spurs%20pregame%202026/DSC06375.JPG',
-    'spurs%20pregame%202026/DSC06583.JPG',
-  ], href: 'spurs-pregame.html', hideYear: true, hoverIcon: 'thumnail%20graphic/spursss.png', hoverIconColor: 'black' },
+  { slug: 'knicks-parade',        title: 'Knicks Parade',            category: 'Event Coverage',     year: 2025, cover: 'selected%20work/knicks%20parade%20coverage/222.JPG', images: [], href: 'project%20pages/knicks-parade.html', hideYear: true },
+  { slug: 'steph-curry',          title: 'Stephen Curry NYU Workout', category: 'Sports Photography', year: 2025, cover: 'selected%20work/steph%20curry/10109.jpg', images: [
+    'selected%20work/steph%20curry/9999.jpg', 'selected%20work/steph%20curry/10109.jpg', 'selected%20work/steph%20curry/333.jpg', 'selected%20work/steph%20curry/666.jpg',
+  ], href: 'project%20pages/steph-curry.html', hideYear: true },
+  { slug: 'espn',                 title: 'NBA Finals Behind the Scenes', category: 'Event Coverage', year: 2025, cover: 'selected%20work/espn/222.jpg', images: [
+    'selected%20work/espn/10111.jpg', 'selected%20work/espn/10113.jpg', 'selected%20work/espn/222.jpg', 'selected%20work/espn/888.jpg', 'selected%20work/espn/DSC06165%20copy.jpg',
+  ], href: 'project%20pages/espn.html', hideYear: true },
+  { slug: 'spurs-pregame',        title: 'Spurs Pre-Game Walkout',   category: 'Event Coverage',     year: 2026, cover: 'selected%20work/spurs%20pregame%202026/111.JPG', images: [
+    'selected%20work/spurs%20pregame%202026/111.JPG',      'selected%20work/spurs%20pregame%202026/444.JPG',      'selected%20work/spurs%20pregame%202026/555.JPG',
+    'selected%20work/spurs%20pregame%202026/777.JPG',      'selected%20work/spurs%20pregame%202026/999.JPG',      'selected%20work/spurs%20pregame%202026/10112.JPG',
+    'selected%20work/spurs%20pregame%202026/DSC06250.JPG', 'selected%20work/spurs%20pregame%202026/DSC06357.JPG', 'selected%20work/spurs%20pregame%202026/DSC06375.JPG',
+    'selected%20work/spurs%20pregame%202026/DSC06583.JPG',
+  ], href: 'project%20pages/spurs-pregame.html', hideYear: true },
+  { slug: 'two-man',              title: 'Two Man',                  category: 'Narrative',          year: 2025, cover: 'film%20stills/two%20man%20stills/st7.png', images: [
+    'film%20stills/two%20man%20stills/st7.png', 'film%20stills/two%20man%20stills/st3.png', 'film%20stills/two%20man%20stills/st1.png',
+    'film%20stills/two%20man%20stills/st6.png', 'film%20stills/two%20man%20stills/st4.png', 'film%20stills/two%20man%20stills/st2.png',
+  ], href: 'project%20pages/two-man.html', hideYear: true },
+  { slug: 'lilie',                title: 'Lilie',                    category: 'Branding',           year: 2025, cover: 'selected%20work/lilie/lilie01.jpg', images: [
+    'selected%20work/lilie/lilie01.jpg', 'selected%20work/lilie/lilie02.jpg', 'selected%20work/lilie/lilie03.jpg',
+    'selected%20work/lilie/lilie04.jpg', 'selected%20work/lilie/lilie05.jpg', 'selected%20work/lilie/lilie06.jpg',
+  ], href: 'project%20pages/lilie.html', hideYear: true },
   { slug: 'ccya-basketball',      title: 'CCYA Celebrity Basketball', category: 'Event Coverage',     year: 2024, cover: '', images: [] },
   { slug: 'prototype',            title: 'Prototype',                category: 'Film',               year: 2025, cover: '', images: [] },
-  { slug: 'cal-stanford',         title: 'Cal @ Stanford',           category: 'Sports Photography', year: 2024, cover: '', images: [] },
+  { slug: 'cal-stanford',         title: 'Cal @ Stanford',           category: 'Sports Photography', year: 2024, cover: 'selected%20work/cal%20stanf/stanford01.jpg', images: [
+    'selected%20work/cal%20stanf/stanford01.jpg', 'selected%20work/cal%20stanf/stanford02.jpg', 'selected%20work/cal%20stanf/stanford03.jpg',
+    'selected%20work/cal%20stanf/stanford04.jpg', 'selected%20work/cal%20stanf/stanford05.jpg', 'selected%20work/cal%20stanf/stanford06.jpg',
+  ], href: 'project%20pages/cal-stanford.html', hideYear: true },
   { slug: 'studio-shoots',        title: 'Studio Shoots',            category: 'Photography',        year: 2026, cover: '', images: [] },
-  { slug: 'experimental-spec-ad', title: 'Experimental Spec Ad',     category: 'Commercial',         year: 2024, cover: '', images: [] },
-  { slug: 'indesign-coverage',    title: 'InDesign Coverage',        category: 'Event Coverage',     year: 2023, cover: '', images: [] },
 ];
 
 
@@ -1173,16 +1165,10 @@ projects.forEach(function(p, i) {
     ? '<img class="card-img" src="' + p.cover + '" alt="' + p.title + '">'
     : '<span class="card-ghost">' + p.title + '</span>';
 
-  // hoverIcon is optional per-project — cards without one just get the white fade.
-  var hoverIconHtml = p.hoverIcon
-    ? '<img class="card-hover-icon' + (p.hoverIconColor === 'black' ? '' : ' card-hover-icon--white') + '" src="' + p.hoverIcon + '" alt="">'
-    : '';
-
   var inner =
     '<div class="card-inner">' +
       coverHtml +
       '<div class="card-fade"></div>' +
-      hoverIconHtml +
     '</div>';
 
   wrap.innerHTML = p.href

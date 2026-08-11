@@ -400,12 +400,12 @@
       category: 'Narrative',
       roles:    ['Director', 'Director of Photography'],
       stills: [
-        'two man stills/st7.png',
-        'two man stills/st3.png',
-        'two man stills/st1.png',
-        'two man stills/st6.png',
-        'two man stills/st4.png',
-        'two man stills/st2.png',
+        'film stills/two man stills/st7.png',
+        'film stills/two man stills/st3.png',
+        'film stills/two man stills/st1.png',
+        'film stills/two man stills/st6.png',
+        'film stills/two man stills/st4.png',
+        'film stills/two man stills/st2.png',
       ],
     },
     {
@@ -414,12 +414,12 @@
       category: 'Music Video',
       roles:    ['Director', 'Director of Photography', 'Editor'],
       stills: [
-        'tvb stills/st1.png',
-        'tvb stills/st2.png',
-        'tvb stills/st3.png',
-        'tvb stills/st5.png',
-        'tvb stills/st6.png',
-        'tvb stills/st4.png',
+        'film stills/tvb stills/st1.png',
+        'film stills/tvb stills/st2.png',
+        'film stills/tvb stills/st3.png',
+        'film stills/tvb stills/st5.png',
+        'film stills/tvb stills/st6.png',
+        'film stills/tvb stills/st4.png',
       ],
     },
     {
@@ -427,13 +427,14 @@
       year:     2026,
       category: 'Short Film',
       roles:    ['Director', 'Director of Photography', 'Editor'],
+      coDirectors: 'Eden Cha, Rylee Stanton, Via',
       stills: [
-        'tally stills/st1.png',
-        'tally stills/st2.png',
-        'tally stills/st3.png',
-        'tally stills/st4.png',
-        'tally stills/st5.png',
-        'tally stills/st6.png',
+        'film stills/tally stills/st1.png',
+        'film stills/tally stills/st2.png',
+        'film stills/tally stills/st3.png',
+        'film stills/tally stills/st4.png',
+        'film stills/tally stills/st5.png',
+        'film stills/tally stills/st6.png',
       ],
     },
     {
@@ -450,10 +451,10 @@
       roles:    ['Director of Photography', 'Colorist'],
       director: 'Sahil Chatwal',
       stills: [
-        'not ready yet/st3.png',
-        'not ready yet/st2.png',
-        'not ready yet/st1.png',
-        'not ready yet/st4.png',
+        'film stills/not ready yet/st3.png',
+        'film stills/not ready yet/st2.png',
+        'film stills/not ready yet/st1.png',
+        'film stills/not ready yet/st4.png',
       ],
     },
     {
@@ -503,7 +504,9 @@
 
     var directorHtml = c.director
       ? '<span class="credit-director">directed by: ' + c.director + '</span>'
-      : '';
+      : c.coDirectors
+        ? '<span class="credit-director">directed alongside: ' + c.coDirectors + '</span>'
+        : '';
 
     var item = document.createElement('div');
     item.className = 'credit-project';
