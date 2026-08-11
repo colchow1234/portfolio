@@ -166,38 +166,46 @@
     }
 
     /* ── CREDITS ── */
-    .credits-header { padding: 130px 40px 0; }
+    .credits-header { padding: 84px 40px 0; }
     .credits-page-title {
       font-family: Helvetica, Arial, sans-serif;
       font-weight: 700;
       text-transform: uppercase;
       line-height: 1;
-      letter-spacing: normal;
+      letter-spacing: -0.02em;
       color: #1c1c1c;
-      font-size: clamp(2.4rem, 6.4vw, 7.2vw);
-      margin-bottom: 64px;
+      font-size: clamp(1.6rem, 4vw, 4.5rem);
+      margin-bottom: 32px;
     }
 
     .credits-list { padding: 0 40px 80px; }
 
     .credit-project {
-      border-top: 1px solid #000;
-      padding: 28px 0;
+      padding: 31px 0;
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 24px;
       align-items: start;
     }
-    .credit-project:last-child { border-bottom: 1px solid #000; }
+    .credit-project:first-child { border-top: 1px solid #000; }
 
     .credit-left {}
     .credit-project-title {
       font-family: Helvetica, Arial, sans-serif;
       font-size: 28px;
       font-weight: 700;
-      letter-spacing: 0.01em;
+      letter-spacing: -0.02em;
       text-transform: lowercase;
       margin-bottom: 10px;
+    }
+    .credit-director {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      text-transform: lowercase;
+      opacity: 0.5;
+      margin-left: 12px;
     }
     .credit-roles {
       display: flex;
@@ -229,6 +237,46 @@
       margin-top: 4px;
     }
 
+    /* ── STILLS CAROUSEL ── */
+    .stills-carousel {
+      position: relative;
+      overflow: hidden;
+      margin: -16px 0 -7px;
+    }
+    .stills-track {
+      display: flex;
+      gap: 8px;
+      transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    .stills-track img {
+      flex-shrink: 0;
+      object-fit: cover;
+      display: block;
+      background: #eee;
+    }
+    .stills-arrow {
+      position: absolute;
+      top: 50%;
+      border: none;
+      background: none;
+      padding: 6px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.55));
+      transition: opacity 0.2s;
+    }
+    .stills-arrow:hover { opacity: 0.7; }
+    .stills-arrow svg { display: block; }
+    .stills-arrow--next {
+      right: 0;
+      transform: translateY(-50%);
+    }
+    .stills-arrow--prev {
+      left: 0;
+      transform: translateY(-50%) scaleX(-1);
+    }
+
     /* ── FOOTER ── */
     footer { margin-top: 96px; padding: 0 40px 56px; }
     footer hr { border: none; border-top: 1px solid #000; margin-bottom: 32px; }
@@ -252,7 +300,7 @@
       .nav-left { display: none; }
       .nav-right { display: none; }
       .hamburger { display: flex; }
-      .credits-header { padding: 96px 24px 0; }
+      .credits-header { padding: 76px 24px 0; }
       .credits-list   { padding: 0 24px 64px; }
       .credit-project { grid-template-columns: 1fr; gap: 8px; }
       .credit-right   { text-align: left; }
@@ -351,54 +399,97 @@
       year:     2025,
       category: 'Narrative',
       roles:    ['Director', 'Director of Photography'],
+      stills: [
+        'two man stills/st7.png',
+        'two man stills/st3.png',
+        'two man stills/st1.png',
+        'two man stills/st6.png',
+        'two man stills/st4.png',
+        'two man stills/st2.png',
+      ],
     },
     {
       title:    'TVB Music Video',
       year:     2026,
       category: 'Music Video',
       roles:    ['Director', 'Director of Photography', 'Editor'],
+      stills: [
+        'tvb stills/st1.png',
+        'tvb stills/st2.png',
+        'tvb stills/st3.png',
+        'tvb stills/st5.png',
+        'tvb stills/st6.png',
+        'tvb stills/st4.png',
+      ],
     },
     {
       title:    'Tally',
       year:     2026,
       category: 'Short Film',
       roles:    ['Director', 'Director of Photography', 'Editor'],
+      stills: [
+        'tally stills/st1.png',
+        'tally stills/st2.png',
+        'tally stills/st3.png',
+        'tally stills/st4.png',
+        'tally stills/st5.png',
+        'tally stills/st6.png',
+      ],
     },
     {
       title:    'Left Behind',
       year:     2026,
       category: 'Short Film',
       roles:    ['Director of Photography', 'Colorist'],
+      director: 'Via',
+    },
+    {
+      title:    'Not Ready Yet',
+      year:     2026,
+      category: 'Short Film',
+      roles:    ['Director of Photography', 'Colorist'],
+      director: 'Sahil Chatwal',
+      stills: [
+        'not ready yet/st3.png',
+        'not ready yet/st2.png',
+        'not ready yet/st1.png',
+        'not ready yet/st4.png',
+      ],
     },
     {
       title:    'Is This Okay?',
       year:     2026,
       category: 'Narrative',
       roles:    ['Director of Photography', 'Production Assistant'],
+      director: 'Eden Cha and Rina Mintz',
     },
     {
       title:    'American Standard',
       year:     '2025–2026',
       category: 'TV Series',
       roles:    ['Campaign Photographer', 'Grip', 'Production Assistant'],
+      director: 'Jaden Collins',
     },
     {
       title:    'Halo',
       year:     2026,
       category: 'Dance Film',
       roles:    ['Campaign Photographer'],
+      director: 'Via',
     },
     {
       title:    'Done Time',
       year:     2025,
       category: 'Dance Film',
       roles:    ['Campaign Photographer'],
+      director: 'Via',
     },
     {
       title:    'Ruin',
       year:     2026,
       category: 'Short Film',
       roles:    ['Key Grip'],
+      director: 'Katie Parmenter',
     },
   ];
 
@@ -410,11 +501,15 @@
       return '<span class="credit-role">' + r + '</span>';
     }).join('');
 
+    var directorHtml = c.director
+      ? '<span class="credit-director">directed by: ' + c.director + '</span>'
+      : '';
+
     var item = document.createElement('div');
     item.className = 'credit-project';
     item.innerHTML =
       '<div class="credit-left">' +
-        '<p class="credit-project-title">' + c.title + '</p>' +
+        '<p class="credit-project-title">' + c.title + directorHtml + '</p>' +
         '<div class="credit-roles">' + rolesHtml + '</div>' +
       '</div>' +
       '<div class="credit-right">' +
@@ -423,7 +518,89 @@
       '</div>';
 
     creditsList.appendChild(item);
+
+    if (c.stills && c.stills.length) {
+      creditsList.appendChild(buildStillsCarousel(c.stills));
+    }
   });
+
+  // ── STILLS CAROUSEL (shows 4 at a time, arrow slides by one) ──
+  function buildStillsCarousel(stills) {
+    var VISIBLE   = 4;
+    var GAP       = 8;
+    var ASPECT    = 1920 / 840;
+    var maxOffset = Math.max(0, stills.length - VISIBLE);
+    var offset    = 0;
+    var itemWidth = 0;
+
+    var wrap = document.createElement('div');
+    wrap.className = 'stills-carousel';
+
+    var track = document.createElement('div');
+    track.className = 'stills-track';
+
+    var imgEls = stills.map(function(src) {
+      var img = document.createElement('img');
+      img.src = src;
+      img.alt = 'Film still';
+      track.appendChild(img);
+      return img;
+    });
+
+    var ARROW_SVG = '<svg width="14" height="24" viewBox="0 0 14 24" fill="none">' +
+      '<path d="M2 2L12 12L2 22" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '</svg>';
+
+    var nextArrow = document.createElement('button');
+    nextArrow.className = 'stills-arrow stills-arrow--next';
+    nextArrow.setAttribute('aria-label', 'Show next still');
+    nextArrow.innerHTML = ARROW_SVG;
+
+    var prevArrow = document.createElement('button');
+    prevArrow.className = 'stills-arrow stills-arrow--prev';
+    prevArrow.setAttribute('aria-label', 'Show previous still');
+    prevArrow.innerHTML = ARROW_SVG;
+
+    function slide() {
+      track.style.transform = 'translateX(-' + (offset * (itemWidth + GAP)) + 'px)';
+      prevArrow.style.display = offset > 0 ? 'flex' : 'none';
+      nextArrow.style.display = offset < maxOffset ? 'flex' : 'none';
+    }
+
+    // Sizes are computed and set in pixels (matching the same technique
+    // used by the project-page galleries) instead of relying on CSS
+    // flex-basis percentages, which behave inconsistently with
+    // aspect-ratio + intrinsic image sizes across browsers.
+    function layout() {
+      var W = wrap.clientWidth;
+      itemWidth = (W - GAP * (VISIBLE - 1)) / VISIBLE;
+      imgEls.forEach(function(img) {
+        img.style.width  = itemWidth + 'px';
+        img.style.height = (itemWidth / ASPECT) + 'px';
+      });
+      slide();
+    }
+
+    nextArrow.addEventListener('click', function() {
+      if (offset < maxOffset) offset++;
+      slide();
+    });
+    prevArrow.addEventListener('click', function() {
+      if (offset > 0) offset--;
+      slide();
+    });
+
+    wrap.appendChild(track);
+    if (stills.length > VISIBLE) {
+      wrap.appendChild(prevArrow);
+      wrap.appendChild(nextArrow);
+    }
+
+    window.addEventListener('resize', layout);
+    requestAnimationFrame(layout);
+
+    return wrap;
+  }
 </script>
 </body>
 </html>
