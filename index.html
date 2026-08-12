@@ -926,6 +926,13 @@
       .hamburger { display: flex; }
 
       #scene { cursor: default; }
+      .hero-label { display: none; }
+      .hero-roles { display: none; }
+      #tilt-rig { transform: scale(0.62); margin-top: 60px; }
+
+      .photo-item.mobile-hide { display: none; }
+
+      .about-collage { display: none; }
 
       #work   { padding: 0 24px; margin-top: 64px; }
       #photos { padding: 0 24px; margin-top: 64px; }
@@ -944,7 +951,7 @@
       #about  { padding: 0 24px; margin-top: 64px; }
       footer  { padding: 0 24px 40px; margin-top: 64px; }
 
-      .work-grid { grid-template-columns: 1fr; }
+      .work-grid { grid-template-columns: repeat(2, 1fr); }
       .about-grid { grid-template-columns: 1fr; gap: 32px; }
 
       .overlay-nav    { padding: 0 24px; }
@@ -1008,6 +1015,9 @@
   <button onclick="scrollTo('about');  closeMenu()">About</button>
   <a href="/credits" onclick="closeMenu()">Credits</a>
   <a href="/sketchbook"  onclick="closeMenu()">Sketchbook</a>
+  <a href="films.html"     onclick="closeMenu()">Films</a>
+  <a href="marketing.html" onclick="closeMenu()">Marketing</a>
+  <a href="photos.html"    onclick="closeMenu()">Photos</a>
   <button onclick="scrollToSection('contact');closeMenu()">Contact</button>
 </div>
 
@@ -1134,17 +1144,17 @@
   <div class="photos-grid">
     <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/BG3A0070.jpg" alt="Photo" loading="lazy"></div>
     <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/BG3A0947-Enhanced-NR.jpg" alt="Photo" loading="lazy"></div>
-    <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/BG3A2908.jpg" alt="Photo" loading="lazy"></div>
+    <div class="photo-item mobile-hide"><img src="_WEBSITE%20SELECTS%20copy/BG3A2908.jpg" alt="Photo" loading="lazy"></div>
     <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/BG3A2972.jpg" alt="Photo" loading="lazy"></div>
-    <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/BG3A3964.jpg" alt="Photo" loading="lazy"></div>
+    <div class="photo-item mobile-hide"><img src="_WEBSITE%20SELECTS%20copy/BG3A3964.jpg" alt="Photo" loading="lazy"></div>
     <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/DSC00164.jpg" alt="Photo" loading="lazy"></div>
     <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/DSC00639.jpg" alt="Photo" loading="lazy"></div>
     <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/DSC00780.jpg" alt="Photo" loading="lazy"></div>
-    <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/DSC06190.jpg" alt="Photo" loading="lazy"></div>
-    <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/DSC06441.jpg" alt="Photo" loading="lazy"></div>
+    <div class="photo-item mobile-hide"><img src="_WEBSITE%20SELECTS%20copy/DSC06190.jpg" alt="Photo" loading="lazy"></div>
+    <div class="photo-item mobile-hide"><img src="_WEBSITE%20SELECTS%20copy/DSC06441.jpg" alt="Photo" loading="lazy"></div>
     <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/DSC00600.jpg" alt="Photo" loading="lazy"></div>
     <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/IMG_9046%20copy.jpg" alt="Photo" loading="lazy"></div>
-    <div class="photo-item"><img src="_WEBSITE%20SELECTS%20copy/DSC09702.jpg" alt="Photo" loading="lazy"></div>
+    <div class="photo-item mobile-hide"><img src="_WEBSITE%20SELECTS%20copy/DSC09702.jpg" alt="Photo" loading="lazy"></div>
   </div>
 </section>
 

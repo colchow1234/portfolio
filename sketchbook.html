@@ -243,14 +243,22 @@
     }
 
     /* ── MOBILE ── */
+    .sk-mobile-home {
+      display: none;
+      color: #fff;
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+    .sk-mobile-home:hover { opacity: 1; }
+
     @media (max-width: 900px) {
       .blueprint { height: auto; min-height: 100vh; overflow: visible; }
-      .sk-white-panel { position: static; width: 100%; padding: 24px 20px 28px; }
-      .sk-home-btn { margin-top: 0; }
+      .sk-white-panel { display: none; }
       .sk-blue-content { padding: 24px 20px 80px; }
-      .sk-note { max-width: 100%; margin: 0 0 16px; }
-      .sk-canvas-frame { max-width: 100%; }
-      .sk-toolbar { max-width: 100%; }
+      .sk-mobile-home { display: inline-block; margin-bottom: 18px; }
       .angle-lines { display: none; }
       .sk-junkyard { flex: none; height: auto; display: block; margin-top: 40px; }
       .sk-junk-item { width: 100% !important; margin-left: 0 !important; margin-bottom: 40px; flex: none; }
@@ -299,6 +307,7 @@
   </div>
 
   <div class="sk-blue-content">
+    <a href="/home" class="sk-mobile-home">← Home</a>
     <div class="sk-topnav">
       <h1 class="sk-title">sketchbook.</h1>
     </div>
