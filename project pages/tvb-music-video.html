@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NBA Finals Behind the Scenes — Colin Chow</title>
+  <title>TVB Music Video — Colin Chow</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;500&display=swap" rel="stylesheet">
@@ -244,7 +244,6 @@
     }
     .footer-links a:hover { opacity: 0.4; }
 
-
     /* ── MOBILE ── */
     @media (max-width: 900px) {
       nav { padding: 22px 24px 0; }
@@ -298,28 +297,29 @@
 
 <!-- ── PROJECT CONTENT ── -->
 <div class="project-header">
-  <h1 class="project-title">NBA Finals Behind the Scenes</h1>
+  <h1 class="project-title">TVB Music Video</h1>
   <div class="project-body">
     <p class="project-desc">
       Description coming soon.
     </p>
     <div class="project-meta">
       <p class="meta-row">
-        <span class="meta-key">Deliverables</span>: <span class="meta-val">Photography</span>
+        <span class="meta-key">Deliverables</span>: <span class="meta-val">Music Video</span>
       </p>
       <p class="meta-row">
-        <span class="meta-key">Role</span>: <span class="meta-val">Creative Direction</span>
+        <span class="meta-key">Role</span>: <span class="meta-val">Director, Director of Photography, Editor</span>
       </p>
     </div>
   </div>
 </div>
 
 <div class="gallery">
-  <img src="../selected%20work/espn/10111.jpg"           alt="ESPN" loading="eager">
-  <img src="../selected%20work/espn/10113.jpg"           alt="ESPN" loading="eager">
-  <img src="../selected%20work/espn/222.jpg"             alt="ESPN" loading="eager">
-  <img src="../selected%20work/espn/888.jpg"             alt="ESPN" loading="eager">
-  <img src="../selected%20work/espn/DSC06165%20copy.jpg" alt="ESPN" loading="eager">
+  <img src="../film%20stills/tvb%20stills/st1.png" alt="TVB Music Video" loading="eager">
+  <img src="../film%20stills/tvb%20stills/st2.png" alt="TVB Music Video" loading="eager">
+  <img src="../film%20stills/tvb%20stills/st3.png" alt="TVB Music Video" loading="eager">
+  <img src="../film%20stills/tvb%20stills/st5.png" alt="TVB Music Video" loading="eager">
+  <img src="../film%20stills/tvb%20stills/st6.png" alt="TVB Music Video" loading="eager">
+  <img src="../film%20stills/tvb%20stills/st4.png" alt="TVB Music Video" loading="eager">
 </div>
 
 <footer id="contact">
@@ -377,9 +377,6 @@
     var GAP = 8;
     var MAX_PER_ROW = 4;
 
-    // Desktop: 3-2 grouping — row 1: 10113, 222, DSC06165; row 2: 10111, 888
-    var DESKTOP_GROUPS = [[1,2,4], [0,3]];
-
     function layout() {
       var cs = window.getComputedStyle(gallery);
       var W  = gallery.clientWidth
@@ -391,26 +388,21 @@
         return (ar > 0 && isFinite(ar)) ? ar : 3 / 2;
       });
 
-      var groups;
-      if (window.innerWidth > 900) {
-        groups = DESKTOP_GROUPS;
-      } else {
-        // Responsive fallback: greedy packing, capped at MAX_PER_ROW images per row
-        var TH = window.innerWidth <= 480 ? 160 : 220;
-        groups = [];
-        var i = 0;
-        while (i < imgs.length) {
-          var j = i, sum = 0;
-          while (j < imgs.length && (j - i) < MAX_PER_ROW) {
-            sum += aspects[j];
-            j++;
-            if (sum * TH + GAP * (j - i - 1) >= W) break;
-          }
-          var g = [];
-          for (var k = i; k < j; k++) g.push(k);
-          groups.push(g);
-          i = j;
+      // Greedy packing, capped at MAX_PER_ROW images per row
+      var TH = window.innerWidth > 900 ? 320 : (window.innerWidth <= 480 ? 160 : 220);
+      var groups = [];
+      var i = 0;
+      while (i < imgs.length) {
+        var j = i, sum = 0;
+        while (j < imgs.length && (j - i) < MAX_PER_ROW) {
+          sum += aspects[j];
+          j++;
+          if (sum * TH + GAP * (j - i - 1) >= W) break;
         }
+        var g = [];
+        for (var k = i; k < j; k++) g.push(k);
+        groups.push(g);
+        i = j;
       }
 
       gallery.innerHTML = '';
