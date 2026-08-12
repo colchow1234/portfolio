@@ -51,9 +51,16 @@
       height: 100%;
       object-fit: contain;
       opacity: 0;
-      transition: opacity 0.5s ease;
+      transform: scale(1.35) rotate(-9deg);
     }
-    .preload-img.active { opacity: 1; }
+    @keyframes preload-zoom-rotate {
+      0%   { opacity: 0; transform: scale(1.35) rotate(-9deg); }
+      35%  { opacity: 1; }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+    .preload-img.active {
+      animation: preload-zoom-rotate 1.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
     .preload-wordmark {
       margin-top: 8px;
       text-align: center;
@@ -962,8 +969,7 @@
 <!-- ── PRELOADER ──────────────────────────────────── -->
 <div id="preloader">
   <div class="preload-frame">
-    <img class="preload-img preload-img-1" src="preload/frame-1.png" alt="">
-    <img class="preload-img preload-img-2" src="preload/frame-2.png" alt="">
+    <img class="preload-img" src="preload/frame-2.png" alt="">
   </div>
   <div class="preload-wordmark">
     <img class="preload-logo" src="yuh.png" alt="Colin Chow">
@@ -1203,25 +1209,20 @@
   sessionStorage.setItem('preloadShown', '1');
 
   document.body.classList.add('preload-active');
-  var img1     = preloader.querySelector('.preload-img-1');
-  var img2     = preloader.querySelector('.preload-img-2');
+  var img      = preloader.querySelector('.preload-img');
   var wordmark = preloader.querySelector('.preload-wordmark');
 
-  img1.classList.add('active');
-  setTimeout(function() {
-    img1.classList.remove('active');
-    img2.classList.add('active');
-  }, 650);
+  img.classList.add('active');
   setTimeout(function() {
     wordmark.classList.add('active');
-  }, 1350);
+  }, 1550);
   setTimeout(function() {
     preloader.classList.add('preload-hidden');
     document.body.classList.remove('preload-active');
-  }, 2300);
+  }, 2450);
   setTimeout(function() {
     preloader.remove();
-  }, 2900);
+  }, 3050);
 })();
 
 

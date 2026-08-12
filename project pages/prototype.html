@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Photos — Colin Chow</title>
-  <link rel="icon" type="image/png" href="yuh.png">
+  <title>Prototype — Colin Chow</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;500&display=swap" rel="stylesheet">
@@ -164,76 +163,68 @@
       font-family: 'IBM Plex Mono', monospace;
     }
 
-    /* ── PAGE HEADER (identical to Credits page title) ── */
-    .photos-header { padding: 84px 40px 0; }
-    .photos-page-title {
-      font-family: Helvetica, Arial, sans-serif;
-      font-weight: 700;
-      text-transform: uppercase;
-      line-height: 1;
-      letter-spacing: -0.02em;
-      color: #1c1c1c;
-      font-size: clamp(1.6rem, 4vw, 4.5rem);
-      margin-bottom: 32px;
+    /* ── PROJECT HEADER ── */
+    .project-header {
+      padding: 130px 60px 40px;
     }
-
-    /* ── GALLERY (identical to Featured Work grid) ── */
-    #photo-work { padding: 0 40px 100px; }
-    .work-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+    .project-title {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 41px;
+      font-weight: 700;
+      letter-spacing: normal;
+      line-height: 30px;
+      text-transform: uppercase;
+      color: #1c1c1c;
+      margin-bottom: 20px;
+    }
+    .project-body {
+      display: flex;
+      align-items: flex-start;
       gap: 8px;
     }
-    .card-wrap { }
-    .project-card {
-      display: block;
-      width: 100%;
-      background: none;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      text-align: left;
-      overflow: hidden;
-      text-decoration: none;
-    }
-    .card-inner {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 3 / 2;
-      background: #1a1a1a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      transition: transform 0.35s ease;
-    }
-    .project-card:hover .card-inner { transform: scale(1.03); }
-    .card-img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .card-fade {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      background: #000;
-      opacity: 0;
-      transition: opacity 300ms ease-out;
-      pointer-events: none;
-    }
-    .project-card:hover .card-fade { opacity: 0.25; }
-    .card-ghost {
-      color: #fff;
-      font-size: 11px;
-      font-weight: 300;
-      letter-spacing: 0.15em;
+    .project-desc {
+      flex: 1;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: normal;
+      line-height: 12px;
       text-transform: uppercase;
-      opacity: 0.22;
-      user-select: none;
-      pointer-events: none;
+      text-align: left;
+      color: #1c1c1c;
+    }
+    .project-meta {
+      flex: 1;
+      text-align: right;
+    }
+    .meta-row {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 11px;
+      letter-spacing: normal;
+      text-transform: uppercase;
+      line-height: 12px;
+      margin: 0;
+      white-space: nowrap;
+      color: #1c1c1c;
+    }
+    .meta-key { font-weight: 700; }
+    .meta-val { font-weight: 400; }
+
+    /* ── GALLERY ── */
+    .gallery {
+      padding: 0 60px 100px;
+      margin-top: -10px;
+      overflow: hidden;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .gallery img {
+      display: block;
+      object-fit: cover;
+      max-width: 100%;
+      height: 220px;
+      width: auto;
     }
 
     /* ── FOOTER ── */
@@ -253,16 +244,18 @@
     }
     .footer-links a:hover { opacity: 0.4; }
 
-
     /* ── MOBILE ── */
     @media (max-width: 900px) {
       nav { padding: 22px 24px 0; }
       .nav-left { display: none; }
       .nav-right { display: none; }
       .hamburger { display: flex; }
-      .photos-header { padding: 76px 24px 0; }
-      #photo-work { padding: 0 24px 60px; }
-      .work-grid { grid-template-columns: 1fr; }
+      .project-header { padding: 72px 24px 48px; }
+      .project-title { font-size: 26px; line-height: 19px; margin-bottom: 14px; }
+      .project-body { flex-direction: column; gap: 32px; }
+      .project-desc { max-width: 100%; }
+      .project-meta { text-align: left; }
+      .gallery { padding: 0 24px 60px; }
       footer  { padding: 0 24px 40px; margin-top: 64px; }
     }
   </style>
@@ -278,7 +271,7 @@
     <li><a href="/sketchbook">Sketchbook</a></li>
   </ul>
 
-  <a href="/home" class="nav-brand"><img src="yuh.png" alt="Colin Chow"></a>
+  <a href="/home" class="nav-brand"><img src="../yuh.png" alt="Colin Chow"></a>
 
   <div class="nav-right">
     <span class="nav-location">
@@ -302,13 +295,36 @@
   <a href="/sketchbook"  onclick="closeMenu()">Sketchbook</a>
 </div>
 
-<!-- ── PHOTOS CONTENT ── -->
-<div class="photos-header">
-  <h1 class="photos-page-title">Photos</h1>
+<!-- ── PROJECT CONTENT ── -->
+<div class="project-header">
+  <h1 class="project-title">Prototype</h1>
+  <div class="project-body">
+    <p class="project-desc">
+      The Prototype A studio photoshoot was built around process rather than performance. Co-directing and shooting the campaign while also designing the hoodie allowed me to think about the product from multiple angles at once—how it's made, how it moves, and how it's experienced on camera. Beyond the garment, the shoot was about identity, experimentation, and building something from the ground up. Each shot became an extension of the design—texture, fit, and attitude coming together in a controlled, intentional space. Prototype A exists in that in-between: where design meets direction, and where ideas are tested visually before they're finalized. The shoot was less about a finished statement and more about documenting a brand in its early, most honest form.
+    </p>
+    <div class="project-meta">
+      <p class="meta-row">
+        <span class="meta-key">Deliverables</span>: <span class="meta-val">Photography, Branding</span>
+      </p>
+      <p class="meta-row">
+        <span class="meta-key">Role</span>: <span class="meta-val">Creative Direction, Designer, Producer, Model</span>
+      </p>
+    </div>
+  </div>
 </div>
 
-<div id="photo-work">
-  <div class="work-grid" id="photoWorkGrid"></div>
+<div class="gallery">
+  <img src="../selected%20work/prototype/prototype01.jpg" alt="Prototype" loading="eager">
+  <img src="../selected%20work/prototype/prototype02.jpg" alt="Prototype" loading="eager">
+  <img src="../selected%20work/prototype/prototype03.jpg" alt="Prototype" loading="eager">
+  <img src="../selected%20work/prototype/prototype04.jpg" alt="Prototype" loading="eager">
+  <img src="../selected%20work/prototype/prototype05.jpg" alt="Prototype" loading="eager">
+  <img src="../selected%20work/prototype/prototype06.jpg" alt="Prototype" loading="eager">
+  <img src="../selected%20work/prototype/prototype07.jpg" alt="Prototype" loading="eager">
+  <img src="../selected%20work/prototype/prototype08.jpg" alt="Prototype" loading="eager">
+  <img src="../selected%20work/prototype/prototype09.jpg" alt="Prototype" loading="eager">
+  <img src="../selected%20work/prototype/prototype10.jpg" alt="Prototype" loading="eager">
+  <img src="../selected%20work/prototype/prototype11.jpg" alt="Prototype" loading="eager">
 </div>
 
 <footer id="contact">
@@ -355,37 +371,86 @@
     }, { passive: true });
   })();
 
-  // ── PHOTO PROJECTS ──
-  var photoProjects = [
-    { title: 'Knicks Parade',                cover: 'project%20tn/knicks%20tn.jpg',   href: 'project%20pages/knicks-parade.html' },
-    { title: 'Stephen Curry NYU Workout',    cover: 'project%20tn/steph%20tn.jpg',              href: 'project%20pages/steph-curry.html' },
-    { title: 'Lilie',                        cover: 'project%20tn/lilie%20tn.jpg',                    href: 'project%20pages/lilie.html' },
-    { title: 'NBA Finals Behind the Scenes', cover: 'project%20tn/espn%20tn.jpg',                         href: 'project%20pages/espn.html' },
-    { title: 'Spurs Pre-Game Walkout',       cover: 'project%20tn/spurs%20tn.jpg',       href: 'project%20pages/spurs-pregame.html' },
-    { title: 'Cal @ Stanford',               cover: 'project%20tn/stanf%20tn.jpg',           href: 'project%20pages/cal-stanford.html' },
-    { title: 'Prototype',                    cover: 'selected%20work/prototype/prototype01.jpg', href: 'project%20pages/prototype.html' },
-  ];
+  // ── JUSTIFIED ROW GALLERY ──
+  (function () {
+    var gallery = document.querySelector('.gallery');
+    if (!gallery) return;
 
-  var photoGrid = document.getElementById('photoWorkGrid');
+    var imgs = Array.from(gallery.querySelectorAll('img'));
+    if (!imgs.length) return;
 
-  photoProjects.forEach(function(p) {
-    var wrap = document.createElement('div');
-    wrap.className = 'card-wrap';
+    var GAP = 8;
+    var MAX_PER_ROW = 4;
 
-    var coverHtml = p.cover
-      ? '<img class="card-img" src="' + p.cover + '" alt="' + p.title + '">'
-      : '<span class="card-ghost">' + p.title + '</span>';
+    function layout() {
+      var cs = window.getComputedStyle(gallery);
+      var W  = gallery.clientWidth
+                 - parseFloat(cs.paddingLeft)
+                 - parseFloat(cs.paddingRight);
 
-    var inner =
-      '<div class="card-inner">' +
-        coverHtml +
-        '<div class="card-fade"></div>' +
-      '</div>';
+      var aspects = imgs.map(function (img) {
+        var ar = img.naturalWidth / img.naturalHeight;
+        return (ar > 0 && isFinite(ar)) ? ar : 3 / 2;
+      });
 
-    wrap.innerHTML = '<a class="project-card" href="' + p.href + '" aria-label="View ' + p.title + '">' + inner + '</a>';
+      // Greedy packing, capped at MAX_PER_ROW images per row
+      var TH = window.innerWidth > 900 ? 320 : (window.innerWidth <= 480 ? 160 : 220);
+      var groups = [];
+      var i = 0;
+      while (i < imgs.length) {
+        var j = i, sum = 0;
+        while (j < imgs.length && (j - i) < MAX_PER_ROW) {
+          sum += aspects[j];
+          j++;
+          if (sum * TH + GAP * (j - i - 1) >= W) break;
+        }
+        var g = [];
+        for (var k = i; k < j; k++) g.push(k);
+        groups.push(g);
+        i = j;
+      }
 
-    photoGrid.appendChild(wrap);
-  });
+      gallery.innerHTML = '';
+
+      groups.forEach(function (group, ri) {
+        var n          = group.length;
+        var sumAspects = group.reduce(function (s, k) { return s + aspects[k]; }, 0);
+        var H          = (W - GAP * (n - 1)) / sumAspects;
+
+        var rowEl = document.createElement('div');
+        rowEl.style.display = 'flex';
+        rowEl.style.gap     = GAP + 'px';
+        if (ri < groups.length - 1) rowEl.style.marginBottom = GAP + 'px';
+
+        group.forEach(function (k) {
+          var img = imgs[k];
+          img.style.width      = (H * aspects[k]) + 'px';
+          img.style.height     = H + 'px';
+          img.style.flexShrink = '0';
+          rowEl.appendChild(img);
+        });
+
+        gallery.appendChild(rowEl);
+      });
+    }
+
+    var pending = imgs.length;
+    function tick() { if (--pending <= 0) layout(); }
+    imgs.forEach(function (img) {
+      if (img.complete && img.naturalWidth > 0) {
+        tick();
+      } else {
+        img.addEventListener('load', tick);
+        img.addEventListener('error', tick);
+      }
+    });
+
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(layout, 80);
+    });
+  })();
 </script>
 </body>
 </html>
