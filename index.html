@@ -215,7 +215,7 @@
       background: none;
       border: none;
       color: #fff;
-      font-size: 26px;
+      font-size: 18px;
       font-weight: 300;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -918,7 +918,7 @@
     @media (max-width: 768px) {
       nav {
         grid-template-columns: 1fr auto;
-        padding: 0 24px;
+        padding: 22px 24px 0;
       }
       .nav-left { display: none; }
       .nav-brand { text-align: left; }
@@ -928,26 +928,27 @@
       #scene { cursor: default; }
       .hero-label { display: none; }
       .hero-roles { display: none; }
-      #tilt-rig { transform: scale(0.62); margin-top: 60px; }
+      #tilt-rig { transform: scale(0.5); margin-top: 60px; }
 
       .photo-item.mobile-hide { display: none; }
 
       .about-collage { display: none; }
 
       #work   { padding: 0 24px; margin-top: 64px; }
-      #photos { padding: 0 24px; margin-top: 64px; }
-      .logo-bar { margin-top: 56px; padding: 40px 0; }
+      #photos { display: none; }
+      .logo-bar { margin-top: 40px; padding: 28px 0; }
       .logo-bar .section-label { padding: 0 24px; }
-      .logo-a16z      { height: 21px; }
-      .logo-aws       { height: 21px; }
-      .logo-notion    { height: 25px; }
-      .logo-snowflake { height: 13px; }
-      .logo-tiktok    { height: 25px; }
-      .logo-tvb       { height: 16px; }
-      .logo-bathhouse { height: 16px; }
-      .logo-myka      { height: 32px; }
-      .logo-espn      { height: 16px; }
-      .logo-nba       { height: 21px; }
+      .logo-track { gap: 32px; }
+      .logo-a16z      { height: 16px; }
+      .logo-aws       { height: 16px; }
+      .logo-notion    { height: 19px; }
+      .logo-snowflake { height: 10px; }
+      .logo-tiktok    { height: 19px; }
+      .logo-tvb       { height: 12px; }
+      .logo-bathhouse { height: 12px; }
+      .logo-myka      { height: 24px; }
+      .logo-espn      { height: 12px; }
+      .logo-nba       { height: 16px; }
       #about  { padding: 0 24px; margin-top: 64px; }
       footer  { padding: 0 24px 40px; margin-top: 64px; }
 
@@ -1014,11 +1015,10 @@
   <button onclick="scrollTo('work');   closeMenu()">Work</button>
   <button onclick="scrollTo('about');  closeMenu()">About</button>
   <a href="/credits" onclick="closeMenu()">Credits</a>
-  <a href="/sketchbook"  onclick="closeMenu()">Sketchbook</a>
   <a href="films.html"     onclick="closeMenu()">Films</a>
   <a href="marketing.html" onclick="closeMenu()">Marketing</a>
   <a href="photos.html"    onclick="closeMenu()">Photos</a>
-  <button onclick="scrollToSection('contact');closeMenu()">Contact</button>
+  <a href="/sketchbook"  onclick="closeMenu()">Sketchbook</a>
 </div>
 
 <!-- ── HERO ───────────────────────────────────────── -->

@@ -242,23 +242,86 @@
       text-align: center;
     }
 
-    /* ── MOBILE ── */
-    .sk-mobile-home {
+    /* ── MOBILE NAV (hidden on desktop — sketchbook has its own layout there) ── */
+    .sk-mobile-nav {
       display: none;
-      color: #fff;
-      text-decoration: none;
-      font-size: 11px;
-      letter-spacing: -0.01em;
-      text-transform: uppercase;
-      opacity: 0.7;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 44px;
+      grid-template-columns: 1fr auto;
+      align-items: flex-start;
+      padding: 22px 24px 0;
     }
-    .sk-mobile-home:hover { opacity: 1; }
+    .sk-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      justify-self: end;
+      grid-column: 2;
+    }
+    .sk-hamburger span { display: block; width: 20px; height: 1px; background: #fff; }
+
+    .sk-mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: #000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+    .sk-mobile-menu.open { display: flex; }
+    .sk-mobile-close {
+      position: absolute;
+      top: 10px; right: 24px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 32px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .sk-mobile-menu a {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+    }
 
     @media (max-width: 900px) {
       .blueprint { height: auto; min-height: 100vh; overflow: visible; }
-      .sk-white-panel { display: none; }
+
+      .sk-mobile-nav { display: grid; }
+      .sk-hamburger { display: flex; }
+
+      .sk-white-panel {
+        position: static;
+        width: 100%;
+        background: transparent;
+        padding: 68px 20px 0;
+      }
+      .sk-home-btn { display: none; }
+      .sk-note { color: #fff; max-width: 100%; }
+      .sk-canvas-frame { max-width: 100%; border-color: #fff; }
+      .sk-toolbar { max-width: 100%; }
+      .sk-tool { border-color: rgba(255,255,255,0.55); color: #fff; }
+      .sk-tool:hover { border-color: #fff; }
+      .sk-tool.active { background: #fff; color: var(--sk-blue); border-color: #fff; }
+
       .sk-blue-content { padding: 24px 20px 80px; }
-      .sk-mobile-home { display: inline-block; margin-bottom: 18px; }
       .angle-lines { display: none; }
       .sk-junkyard { flex: none; height: auto; display: block; margin-top: 40px; }
       .sk-junk-item { width: 100% !important; margin-left: 0 !important; margin-bottom: 40px; flex: none; }
@@ -267,6 +330,25 @@
   </style>
 </head>
 <body>
+
+<!-- ── MOBILE NAV (hidden on desktop) ── -->
+<nav class="sk-mobile-nav">
+  <span></span>
+  <button class="sk-hamburger" onclick="openSkMenu()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="sk-mobile-menu" id="skMobileMenu">
+  <button class="sk-mobile-close" onclick="closeSkMenu()" aria-label="Close">×</button>
+  <a href="/home"        onclick="closeSkMenu()">Work</a>
+  <a href="/home#about"  onclick="closeSkMenu()">About</a>
+  <a href="/credits"     onclick="closeSkMenu()">Credits</a>
+  <a href="films.html"     onclick="closeSkMenu()">Films</a>
+  <a href="marketing.html" onclick="closeSkMenu()">Marketing</a>
+  <a href="photos.html"    onclick="closeSkMenu()">Photos</a>
+  <a href="/sketchbook"  onclick="closeSkMenu()">Sketchbook</a>
+</div>
 
 <div class="blueprint">
   <div class="sk-white-panel">
@@ -307,7 +389,6 @@
   </div>
 
   <div class="sk-blue-content">
-    <a href="/home" class="sk-mobile-home">← Home</a>
     <div class="sk-topnav">
       <h1 class="sk-title">sketchbook.</h1>
     </div>
@@ -330,6 +411,10 @@
 </div>
 
 <script>
+  // ── MOBILE MENU ──
+  function openSkMenu()  { document.getElementById('skMobileMenu').classList.add('open');    document.body.style.overflow = 'hidden'; }
+  function closeSkMenu() { document.getElementById('skMobileMenu').classList.remove('open'); document.body.style.overflow = ''; }
+
   (function () {
     var canvas = document.getElementById('sketchCanvas');
     var ctx = canvas.getContext('2d');
@@ -362,7 +447,7 @@
         ctx.lineWidth = 22;
       } else {
         ctx.globalCompositeOperation = 'source-over';
-        ctx.strokeStyle = '#000000';
+        ctx.strokeStyle = window.innerWidth <= 900 ? '#ffffff' : '#000000';
         ctx.lineWidth = 2.5;
       }
       ctx.moveTo(last.x, last.y);
