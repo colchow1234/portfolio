@@ -25,6 +25,57 @@
     button { font-family: inherit; font-weight: 500; }
     img { display: block; max-width: 100%; }
 
+    /* ── PRELOADER ── */
+    #preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.6s ease;
+    }
+    #preloader.preload-hidden { opacity: 0; pointer-events: none; }
+    body.preload-active { overflow: hidden; }
+    .preload-frame {
+      position: relative;
+      width: min(46vw, 380px);
+      aspect-ratio: 900 / 674;
+    }
+    .preload-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .preload-img.active { opacity: 1; }
+    .preload-wordmark {
+      margin-top: 8px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .preload-wordmark.active { opacity: 1; transform: translateY(0); }
+    .preload-logo { height: 56px; width: auto; display: block; margin: 0 auto; }
+    .preload-role {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #F2C230;
+      margin-top: 6px;
+    }
+    @media (max-width: 768px) {
+      .preload-frame { width: 70vw; }
+    }
+
     /* ── NAV ── */
     nav {
       position: fixed;
@@ -908,6 +959,18 @@
 </head>
 <body>
 
+<!-- ── PRELOADER ──────────────────────────────────── -->
+<div id="preloader">
+  <div class="preload-frame">
+    <img class="preload-img preload-img-1" src="preload/frame-1.png" alt="">
+    <img class="preload-img preload-img-2" src="preload/frame-2.png" alt="">
+  </div>
+  <div class="preload-wordmark">
+    <img class="preload-logo" src="yuh.png" alt="Colin Chow">
+    <p class="preload-role">creative director</p>
+  </div>
+</div>
+
 <!-- ── NAV ────────────────────────────────────────── -->
 <nav>
   <ul class="nav-left">
@@ -1127,6 +1190,41 @@
 
 <script>
 
+// ── PRELOADER ─────────────────────────────────────────────────────────────────
+
+(function() {
+  var preloader = document.getElementById('preloader');
+  if (!preloader) return;
+
+  if (sessionStorage.getItem('preloadShown')) {
+    preloader.remove();
+    return;
+  }
+  sessionStorage.setItem('preloadShown', '1');
+
+  document.body.classList.add('preload-active');
+  var img1     = preloader.querySelector('.preload-img-1');
+  var img2     = preloader.querySelector('.preload-img-2');
+  var wordmark = preloader.querySelector('.preload-wordmark');
+
+  img1.classList.add('active');
+  setTimeout(function() {
+    img1.classList.remove('active');
+    img2.classList.add('active');
+  }, 650);
+  setTimeout(function() {
+    wordmark.classList.add('active');
+  }, 1350);
+  setTimeout(function() {
+    preloader.classList.add('preload-hidden');
+    document.body.classList.remove('preload-active');
+  }, 2300);
+  setTimeout(function() {
+    preloader.remove();
+  }, 2900);
+})();
+
+
 // ── PROJECT DATA ─────────────────────────────────────────────────────────────
 
 var projects = [
@@ -1157,7 +1255,6 @@ var projects = [
   ], href: 'project%20pages/spurs-pregame.html', hideYear: true },
   { slug: 'ccya-basketball',      title: 'CCYA Celebrity Basketball', category: 'Event Coverage',     year: 2024, cover: '', images: [] },
   { slug: 'prototype',            title: 'Prototype',                category: 'Film',               year: 2025, cover: '', images: [] },
-  { slug: 'studio-shoots',        title: 'Studio Shoots',            category: 'Photography',        year: 2026, cover: '', images: [] },
 ];
 
 

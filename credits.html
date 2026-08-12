@@ -204,7 +204,7 @@
       font-weight: 400;
       letter-spacing: -0.02em;
       text-transform: lowercase;
-      opacity: 0.5;
+      color: #2563EB;
       margin-left: 12px;
     }
     .credit-roles {
@@ -254,29 +254,6 @@
       display: block;
       background: #eee;
     }
-    .stills-arrow {
-      position: absolute;
-      top: 50%;
-      border: none;
-      background: none;
-      padding: 6px 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.55));
-      transition: opacity 0.2s;
-    }
-    .stills-arrow:hover { opacity: 0.7; }
-    .stills-arrow svg { display: block; }
-    .stills-arrow--next {
-      right: 0;
-      transform: translateY(-50%);
-    }
-    .stills-arrow--prev {
-      left: 0;
-      transform: translateY(-50%) scaleX(-1);
-    }
-
     /* ── FOOTER ── */
     footer { margin-top: 96px; padding: 0 40px 56px; }
     footer hr { border: none; border-top: 1px solid #000; margin-bottom: 32px; }
@@ -293,6 +270,7 @@
       transition: opacity 0.2s;
     }
     .footer-links a:hover { opacity: 0.4; }
+
 
     /* ── MOBILE ── */
     @media (max-width: 900px) {
@@ -351,6 +329,73 @@
 <div class="credits-list" id="creditsList"></div>
 
 <footer id="contact">
+    <div class="train-wrap">
+      <svg class="train-svg" xmlns="http://www.w3.org/2000/svg"
+           viewBox="0 0 316 50" width="183" height="29"
+           fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="square" shape-rendering="crispEdges">
+        <g transform="scale(-1,1) translate(-316,0)">
+        <!-- LOCOMOTIVE -->
+        <rect x="5"  y="1"  width="12" height="3"/>
+        <rect x="7"  y="4"  width="8"  height="11"/>
+        <rect x="22" y="10" width="10" height="7"/>
+        <rect x="2"  y="17" width="50" height="16"/>
+        <rect x="44" y="7"  width="22" height="26"/>
+        <rect x="48" y="11" width="10" height="10"/>
+        <rect x="0"  y="33" width="68" height="5"/>
+        <rect x="0"  y="38" width="8"  height="3"/>
+        <rect x="5"  y="38" width="9"  height="9"/>
+        <rect x="19" y="36" width="13" height="13"/>
+        <rect x="38" y="36" width="13" height="13"/>
+        <rect x="54" y="38" width="9"  height="9"/>
+        <rect x="25" y="43" width="19" height="2" stroke-width="1"/>
+        <rect x="25" y="41" width="2"  height="2" fill="#000" stroke="none"/>
+        <rect x="44" y="41" width="2"  height="2" fill="#000" stroke="none"/>
+        <rect x="68" y="41" width="10" height="3"/>
+        <!-- CAR 1 — Passenger -->
+        <rect x="78"  y="16" width="52" height="4"/>
+        <rect x="78"  y="18" width="52" height="18"/>
+        <rect x="82"  y="22" width="10" height="10"/>
+        <rect x="96"  y="22" width="10" height="10"/>
+        <rect x="110" y="22" width="10" height="10"/>
+        <rect x="78"  y="36" width="52" height="5"/>
+        <rect x="82"  y="38" width="10" height="10"/>
+        <rect x="116" y="38" width="10" height="10"/>
+        <rect x="130" y="41" width="10" height="3"/>
+        <!-- CAR 2 — Boxcar -->
+        <rect x="140" y="13" width="50" height="3"/>
+        <rect x="140" y="15" width="50" height="21"/>
+        <rect x="156" y="15" width="16" height="21"/>
+        <rect x="140" y="36" width="50" height="5"/>
+        <rect x="144" y="38" width="10" height="10"/>
+        <rect x="176" y="38" width="10" height="10"/>
+        <rect x="190" y="41" width="10" height="3"/>
+        <!-- CAR 3 — Tanker -->
+        <rect x="204" y="17" width="44" height="15"/>
+        <rect x="206" y="15" width="38" height="3"/>
+        <rect x="218" y="12" width="12" height="4"/>
+        <rect x="200" y="19" width="5"  height="13"/>
+        <rect x="247" y="19" width="5"  height="13"/>
+        <rect x="200" y="32" width="52" height="6"/>
+        <rect x="204" y="38" width="10" height="10"/>
+        <rect x="238" y="38" width="10" height="10"/>
+        <rect x="252" y="41" width="10" height="3"/>
+        <!-- CAR 4 — Passenger -->
+        <rect x="262" y="16" width="52" height="4"/>
+        <rect x="262" y="18" width="52" height="18"/>
+        <rect x="266" y="22" width="10" height="10"/>
+        <rect x="280" y="22" width="10" height="10"/>
+        <rect x="294" y="22" width="10" height="10"/>
+        <rect x="262" y="36" width="52" height="5"/>
+        <rect x="266" y="38" width="10" height="10"/>
+        <rect x="300" y="38" width="10" height="10"/>
+        </g>
+        <!-- Smoke -->
+        <circle class="puff puff-1" cx="305" cy="1" r="3"   fill="#222"/>
+        <circle class="puff puff-2" cx="305" cy="1" r="2.5" fill="#222"/>
+        <circle class="puff puff-3" cx="305" cy="1" r="3.5" fill="#222"/>
+      </svg>
+    </div>
+  </div>
   <hr>
   <div class="footer-row">
     <span class="footer-name">Colin Chow</span>
@@ -445,6 +490,12 @@
       category: 'Short Film',
       roles:    ['Director of Photography', 'Colorist'],
       director: 'Via',
+      stills: [
+        'film stills/left behind/yuhhh_1.1.1.jpg',
+        'film stills/left behind/yuhhh_2.1.1.jpg',
+        'film stills/left behind/yuhhh_2.1.2.jpg',
+        'film stills/left behind/yuhhh_2.2.1.jpg',
+      ],
     },
     {
       title:    'Not Ready Yet',
@@ -529,14 +580,11 @@
     }
   });
 
-  // ── STILLS CAROUSEL (shows 4 at a time, arrow slides by one) ──
+  // ── STILLS ROW (static, first 4 only) ──
   function buildStillsCarousel(stills) {
-    var VISIBLE   = 4;
-    var GAP       = 8;
-    var ASPECT    = 1920 / 840;
-    var maxOffset = Math.max(0, stills.length - VISIBLE);
-    var offset    = 0;
-    var itemWidth = 0;
+    var VISIBLE = 4;
+    var GAP     = 8;
+    var ASPECT  = 1920 / 840;
 
     var wrap = document.createElement('div');
     wrap.className = 'stills-carousel';
@@ -544,7 +592,7 @@
     var track = document.createElement('div');
     track.className = 'stills-track';
 
-    var imgEls = stills.map(function(src) {
+    var imgEls = stills.slice(0, VISIBLE).map(function(src) {
       var img = document.createElement('img');
       img.src = src;
       img.alt = 'Film still';
@@ -552,55 +600,20 @@
       return img;
     });
 
-    var ARROW_SVG = '<svg width="14" height="24" viewBox="0 0 14 24" fill="none">' +
-      '<path d="M2 2L12 12L2 22" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>' +
-      '</svg>';
-
-    var nextArrow = document.createElement('button');
-    nextArrow.className = 'stills-arrow stills-arrow--next';
-    nextArrow.setAttribute('aria-label', 'Show next still');
-    nextArrow.innerHTML = ARROW_SVG;
-
-    var prevArrow = document.createElement('button');
-    prevArrow.className = 'stills-arrow stills-arrow--prev';
-    prevArrow.setAttribute('aria-label', 'Show previous still');
-    prevArrow.innerHTML = ARROW_SVG;
-
-    function slide() {
-      track.style.transform = 'translateX(-' + (offset * (itemWidth + GAP)) + 'px)';
-      prevArrow.style.display = offset > 0 ? 'flex' : 'none';
-      nextArrow.style.display = offset < maxOffset ? 'flex' : 'none';
-    }
-
     // Sizes are computed and set in pixels (matching the same technique
     // used by the project-page galleries) instead of relying on CSS
     // flex-basis percentages, which behave inconsistently with
     // aspect-ratio + intrinsic image sizes across browsers.
     function layout() {
       var W = wrap.clientWidth;
-      itemWidth = (W - GAP * (VISIBLE - 1)) / VISIBLE;
+      var itemWidth = (W - GAP * (VISIBLE - 1)) / VISIBLE;
       imgEls.forEach(function(img) {
         img.style.width  = itemWidth + 'px';
         img.style.height = (itemWidth / ASPECT) + 'px';
       });
-      slide();
     }
-
-    nextArrow.addEventListener('click', function() {
-      if (offset < maxOffset) offset++;
-      slide();
-    });
-    prevArrow.addEventListener('click', function() {
-      if (offset > 0) offset--;
-      slide();
-    });
 
     wrap.appendChild(track);
-    if (stills.length > VISIBLE) {
-      wrap.appendChild(prevArrow);
-      wrap.appendChild(nextArrow);
-    }
-
     window.addEventListener('resize', layout);
     requestAnimationFrame(layout);
 
