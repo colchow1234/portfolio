@@ -586,6 +586,7 @@
     counter.className = 'stills-counter';
 
     var itemWidth = 0;
+    var GAP = 8;
 
     function slide() {
       track.style.transform = 'translateX(-' + (index * itemWidth) + 'px)';
@@ -594,18 +595,48 @@
       counter.textContent = (index + 1) + ' / ' + stills.length;
     }
 
+    // Mobile: one still at a time with arrow navigation, all stills reachable.
+    // Desktop (>900px): static row showing just the first 4 stills, as before.
+    //
     // Sizes are computed and set in pixels (matching the same technique
     // used by the project-page galleries) instead of relying on CSS
     // flex-basis percentages, which behave inconsistently with
     // aspect-ratio + intrinsic image sizes across browsers.
     function layout() {
       var W = wrap.clientWidth;
-      itemWidth = W;
-      imgEls.forEach(function(img) {
-        img.style.width  = itemWidth + 'px';
-        img.style.height = (itemWidth / ASPECT) + 'px';
-      });
-      slide();
+      var mobile = window.innerWidth <= 900;
+
+      if (mobile) {
+        index = 0;
+        itemWidth = W;
+        imgEls.forEach(function(img) {
+          img.style.display = 'block';
+          img.style.width   = itemWidth + 'px';
+          img.style.height  = (itemWidth / ASPECT) + 'px';
+        });
+        if (stills.length > 1) {
+          wrap.appendChild(prevArrow);
+          wrap.appendChild(nextArrow);
+          wrap.appendChild(counter);
+        }
+        slide();
+      } else {
+        var visibleCount = Math.min(4, stills.length);
+        itemWidth = (W - GAP * (visibleCount - 1)) / visibleCount;
+        imgEls.forEach(function(img, i) {
+          if (i < visibleCount) {
+            img.style.display = 'block';
+            img.style.width   = itemWidth + 'px';
+            img.style.height  = (itemWidth / ASPECT) + 'px';
+          } else {
+            img.style.display = 'none';
+          }
+        });
+        track.style.transform = 'translateX(0px)';
+        prevArrow.remove();
+        nextArrow.remove();
+        counter.remove();
+      }
     }
 
     nextArrow.addEventListener('click', function() {
@@ -618,11 +649,6 @@
     });
 
     wrap.appendChild(track);
-    if (stills.length > 1) {
-      wrap.appendChild(prevArrow);
-      wrap.appendChild(nextArrow);
-      wrap.appendChild(counter);
-    }
 
     window.addEventListener('resize', layout);
     requestAnimationFrame(layout);
