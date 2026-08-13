@@ -192,7 +192,7 @@
     .credit-left {}
     .credit-project-title {
       font-family: Helvetica, Arial, sans-serif;
-      font-size: 28px;
+      font-size: 38px;
       font-weight: 700;
       letter-spacing: -0.02em;
       text-transform: lowercase;
@@ -213,7 +213,7 @@
       gap: 6px 16px;
     }
     .credit-role {
-      font-size: 11px;
+      font-size: 9px;
       font-weight: 300;
       letter-spacing: 0.15em;
       text-transform: uppercase;
@@ -223,13 +223,13 @@
 
     .credit-right { text-align: right; }
     .credit-year {
-      font-size: 11px;
+      font-size: 9px;
       font-weight: 300;
       letter-spacing: 0.15em;
       opacity: 0.4;
     }
     .credit-category {
-      font-size: 10px;
+      font-size: 8px;
       font-weight: 300;
       letter-spacing: 0.15em;
       text-transform: uppercase;
@@ -253,6 +253,40 @@
       object-fit: cover;
       display: block;
       background: #eee;
+    }
+    .stills-arrow {
+      position: absolute;
+      top: 50%;
+      border: none;
+      background: none;
+      padding: 6px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.55));
+      transition: opacity 0.2s;
+    }
+    .stills-arrow:hover { opacity: 0.7; }
+    .stills-arrow svg { display: block; }
+    .stills-arrow--next {
+      right: 0;
+      transform: translateY(-50%);
+    }
+    .stills-arrow--prev {
+      left: 0;
+      transform: translateY(-50%) scaleX(-1);
+    }
+    .stills-counter {
+      position: absolute;
+      bottom: 8px;
+      right: 12px;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: #fff;
+      background: rgba(0,0,0,0.5);
+      padding: 2px 8px;
+      pointer-events: none;
     }
     /* ── FOOTER ── */
     footer { margin-top: 96px; padding: 0 40px 56px; }
@@ -515,11 +549,10 @@
     }
   });
 
-  // ── STILLS ROW (static, first 4 only) ──
+  // ── STILLS CAROUSEL (one at a time, arrow navigation) ──
   function buildStillsCarousel(stills) {
-    var VISIBLE = 4;
-    var GAP     = 8;
-    var ASPECT  = 1920 / 840;
+    var ASPECT = 1920 / 840;
+    var index  = 0;
 
     var wrap = document.createElement('div');
     wrap.className = 'stills-carousel';
@@ -527,7 +560,7 @@
     var track = document.createElement('div');
     track.className = 'stills-track';
 
-    var imgEls = stills.slice(0, VISIBLE).map(function(src) {
+    var imgEls = stills.map(function(src) {
       var img = document.createElement('img');
       img.src = src;
       img.alt = 'Film still';
@@ -535,20 +568,62 @@
       return img;
     });
 
+    var ARROW_SVG = '<svg width="14" height="24" viewBox="0 0 14 24" fill="none">' +
+      '<path d="M2 2L12 12L2 22" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '</svg>';
+
+    var nextArrow = document.createElement('button');
+    nextArrow.className = 'stills-arrow stills-arrow--next';
+    nextArrow.setAttribute('aria-label', 'Show next still');
+    nextArrow.innerHTML = ARROW_SVG;
+
+    var prevArrow = document.createElement('button');
+    prevArrow.className = 'stills-arrow stills-arrow--prev';
+    prevArrow.setAttribute('aria-label', 'Show previous still');
+    prevArrow.innerHTML = ARROW_SVG;
+
+    var counter = document.createElement('div');
+    counter.className = 'stills-counter';
+
+    var itemWidth = 0;
+
+    function slide() {
+      track.style.transform = 'translateX(-' + (index * itemWidth) + 'px)';
+      prevArrow.style.display = index > 0 ? 'flex' : 'none';
+      nextArrow.style.display = index < stills.length - 1 ? 'flex' : 'none';
+      counter.textContent = (index + 1) + ' / ' + stills.length;
+    }
+
     // Sizes are computed and set in pixels (matching the same technique
     // used by the project-page galleries) instead of relying on CSS
     // flex-basis percentages, which behave inconsistently with
     // aspect-ratio + intrinsic image sizes across browsers.
     function layout() {
       var W = wrap.clientWidth;
-      var itemWidth = (W - GAP * (VISIBLE - 1)) / VISIBLE;
+      itemWidth = W;
       imgEls.forEach(function(img) {
         img.style.width  = itemWidth + 'px';
         img.style.height = (itemWidth / ASPECT) + 'px';
       });
+      slide();
     }
 
+    nextArrow.addEventListener('click', function() {
+      if (index < stills.length - 1) index++;
+      slide();
+    });
+    prevArrow.addEventListener('click', function() {
+      if (index > 0) index--;
+      slide();
+    });
+
     wrap.appendChild(track);
+    if (stills.length > 1) {
+      wrap.appendChild(prevArrow);
+      wrap.appendChild(nextArrow);
+      wrap.appendChild(counter);
+    }
+
     window.addEventListener('resize', layout);
     requestAnimationFrame(layout);
 
