@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Films — Colin Chow</title>
-  <link rel="icon" type="image/png" href="yuh.png">
+  <title>Marble Spec Ad — Colin Chow</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;500&display=swap" rel="stylesheet">
@@ -164,76 +163,68 @@
       font-family: 'IBM Plex Mono', monospace;
     }
 
-    /* ── PAGE HEADER (identical to Credits page title) ── */
-    .films-header { padding: 84px 40px 0; }
-    .films-page-title {
-      font-family: Helvetica, Arial, sans-serif;
-      font-weight: 700;
-      text-transform: uppercase;
-      line-height: 1;
-      letter-spacing: -0.02em;
-      color: #1c1c1c;
-      font-size: clamp(1.6rem, 4vw, 4.5rem);
-      margin-bottom: 32px;
+    /* ── PROJECT HEADER ── */
+    .project-header {
+      padding: 130px 60px 40px;
     }
-
-    /* ── GALLERY (identical to Featured Work grid) ── */
-    #film-work { padding: 0 40px 100px; }
-    .work-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+    .project-title {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 41px;
+      font-weight: 700;
+      letter-spacing: normal;
+      line-height: 30px;
+      text-transform: uppercase;
+      color: #1c1c1c;
+      margin-bottom: 20px;
+    }
+    .project-body {
+      display: flex;
+      align-items: flex-start;
       gap: 8px;
     }
-    .card-wrap { }
-    .project-card {
-      display: block;
-      width: 100%;
-      background: none;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      text-align: left;
-      overflow: hidden;
-      text-decoration: none;
-    }
-    .card-inner {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 3 / 2;
-      background: #1a1a1a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      transition: transform 0.35s ease;
-    }
-    .project-card:hover .card-inner { transform: scale(1.03); }
-    .card-img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .card-fade {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      background: #000;
-      opacity: 0;
-      transition: opacity 300ms ease-out;
-      pointer-events: none;
-    }
-    .project-card:hover .card-fade { opacity: 0.25; }
-    .card-ghost {
-      color: #fff;
-      font-size: 11px;
-      font-weight: 300;
-      letter-spacing: 0.15em;
+    .project-desc {
+      flex: 1;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: normal;
+      line-height: 12px;
       text-transform: uppercase;
-      opacity: 0.22;
-      user-select: none;
-      pointer-events: none;
+      text-align: left;
+      color: #1c1c1c;
+    }
+    .project-meta {
+      flex: 1;
+      text-align: right;
+    }
+    .meta-row {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 11px;
+      letter-spacing: normal;
+      text-transform: uppercase;
+      line-height: 12px;
+      margin: 0;
+      white-space: nowrap;
+      color: #1c1c1c;
+    }
+    .meta-key { font-weight: 700; }
+    .meta-val { font-weight: 400; }
+
+    /* ── GALLERY ── */
+    .gallery {
+      padding: 0 60px 100px;
+      margin-top: -10px;
+      overflow: hidden;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .gallery img {
+      display: block;
+      object-fit: cover;
+      max-width: 100%;
+      height: 220px;
+      width: auto;
     }
 
     /* ── FOOTER ── */
@@ -261,9 +252,13 @@
       .nav-brand { text-align: left; }
       .nav-right { display: none; }
       .hamburger { display: flex; }
-      .films-header { padding: 76px 24px 0; }
-      #film-work { padding: 0 24px 60px; }
-      .work-grid { grid-template-columns: 1fr; }
+      .project-header { padding: 100px 24px 48px; }
+      .project-title { font-size: 26px; line-height: 19px; margin-bottom: 14px; }
+      .project-body { flex-direction: column; gap: 32px; }
+      .project-desc { max-width: 100%; }
+      .project-meta { text-align: left; }
+      .meta-row { font-size: 9px; line-height: 11px; }
+      .gallery { padding: 0 24px 60px; }
       footer  { padding: 0 24px 40px; margin-top: 64px; }
     }
   </style>
@@ -279,7 +274,7 @@
     <li><a href="/sketchbook">Sketchbook</a></li>
   </ul>
 
-  <a href="/home" class="nav-brand"><img src="yuh.png" alt="Colin Chow"></a>
+  <a href="/home" class="nav-brand"><img src="../yuh.png" alt="Colin Chow"></a>
 
   <div class="nav-right">
     <span class="nav-location">
@@ -298,19 +293,42 @@
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-close" onclick="closeMenu()" aria-label="Close">×</button>
   <a href="/credits"     onclick="closeMenu()">Credits</a>
-  <a href="films.html"     onclick="closeMenu()">Films</a>
-  <a href="marketing.html" onclick="closeMenu()">Marketing</a>
-  <a href="photos.html"    onclick="closeMenu()">Photos</a>
+  <a href="../films.html"     onclick="closeMenu()">Films</a>
+  <a href="../marketing.html" onclick="closeMenu()">Marketing</a>
+  <a href="../photos.html"    onclick="closeMenu()">Photos</a>
   <a href="/sketchbook"  onclick="closeMenu()">Sketchbook</a>
 </div>
 
-<!-- ── FILMS CONTENT ── -->
-<div class="films-header">
-  <h1 class="films-page-title">Films</h1>
+<!-- ── PROJECT CONTENT ── -->
+<div class="project-header">
+  <h1 class="project-title">Marble Spec Ad</h1>
+  <div class="project-body">
+    <p class="project-desc">
+    </p>
+    <div class="project-meta">
+      <p class="meta-row">
+        <span class="meta-key">Deliverables</span>: <span class="meta-val">Spec Ad</span>
+      </p>
+      <p class="meta-row">
+        <span class="meta-key">Role</span>: <span class="meta-val">Director of Photography</span>
+      </p>
+    </div>
+  </div>
 </div>
 
-<div id="film-work">
-  <div class="work-grid" id="filmWorkGrid"></div>
+<div class="gallery">
+  <img src="../film%20stills/marble%20stills/marble01.jpg" alt="Marble Spec Ad" loading="eager">
+  <img src="../film%20stills/marble%20stills/marble02.jpg" alt="Marble Spec Ad" loading="eager">
+  <img src="../film%20stills/marble%20stills/marble03.jpg" alt="Marble Spec Ad" loading="eager">
+  <img src="../film%20stills/marble%20stills/marble04.jpg" alt="Marble Spec Ad" loading="eager">
+  <img src="../film%20stills/marble%20stills/marble05.jpg" alt="Marble Spec Ad" loading="eager">
+  <img src="../film%20stills/marble%20stills/marble06.jpg" alt="Marble Spec Ad" loading="eager">
+  <img src="../film%20stills/marble%20stills/marble07.jpg" alt="Marble Spec Ad" loading="eager">
+  <img src="../film%20stills/marble%20stills/marble08.jpg" alt="Marble Spec Ad" loading="eager">
+  <img src="../film%20stills/marble%20stills/marble09.jpg" alt="Marble Spec Ad" loading="eager">
+  <img src="../film%20stills/marble%20stills/marble10.jpg" alt="Marble Spec Ad" loading="eager">
+  <img src="../film%20stills/marble%20stills/marble11.jpg" alt="Marble Spec Ad" loading="eager">
+  <img src="../film%20stills/marble%20stills/marble12.jpg" alt="Marble Spec Ad" loading="eager">
 </div>
 
 <footer id="contact">
@@ -357,33 +375,86 @@
     }, { passive: true });
   })();
 
-  // ── FILM PROJECTS ──
-  var filmProjects = [
-    { title: 'Two Man',         cover: 'project%20tn/two%20man%20tn.jpg', href: 'project%20pages/two-man.html' },
-    { title: 'TVB Music Video', cover: 'project%20tn/tvb%20tn.jpg',       href: 'project%20pages/tvb-music-video.html' },
-    { title: 'Marble Spec Ad',  cover: 'film%20stills/marble%20stills/marble01.jpg', href: 'project%20pages/marble-spec-ad.html' },
-  ];
+  // ── JUSTIFIED ROW GALLERY ──
+  (function () {
+    var gallery = document.querySelector('.gallery');
+    if (!gallery) return;
 
-  var filmGrid = document.getElementById('filmWorkGrid');
+    var imgs = Array.from(gallery.querySelectorAll('img'));
+    if (!imgs.length) return;
 
-  filmProjects.forEach(function(p) {
-    var wrap = document.createElement('div');
-    wrap.className = 'card-wrap';
+    var GAP = 8;
+    var MAX_PER_ROW = 4;
 
-    var coverHtml = p.cover
-      ? '<img class="card-img" src="' + p.cover + '" alt="' + p.title + '">'
-      : '<span class="card-ghost">' + p.title + '</span>';
+    function layout() {
+      var cs = window.getComputedStyle(gallery);
+      var W  = gallery.clientWidth
+                 - parseFloat(cs.paddingLeft)
+                 - parseFloat(cs.paddingRight);
 
-    var inner =
-      '<div class="card-inner">' +
-        coverHtml +
-        '<div class="card-fade"></div>' +
-      '</div>';
+      var aspects = imgs.map(function (img) {
+        var ar = img.naturalWidth / img.naturalHeight;
+        return (ar > 0 && isFinite(ar)) ? ar : 3 / 2;
+      });
 
-    wrap.innerHTML = '<a class="project-card" href="' + p.href + '" aria-label="View ' + p.title + '">' + inner + '</a>';
+      // Greedy packing, capped at MAX_PER_ROW images per row
+      var TH = window.innerWidth > 900 ? 320 : (window.innerWidth <= 480 ? 160 : 220);
+      var groups = [];
+      var i = 0;
+      while (i < imgs.length) {
+        var j = i, sum = 0;
+        while (j < imgs.length && (j - i) < MAX_PER_ROW) {
+          sum += aspects[j];
+          j++;
+          if (sum * TH + GAP * (j - i - 1) >= W) break;
+        }
+        var g = [];
+        for (var k = i; k < j; k++) g.push(k);
+        groups.push(g);
+        i = j;
+      }
 
-    filmGrid.appendChild(wrap);
-  });
+      gallery.innerHTML = '';
+
+      groups.forEach(function (group, ri) {
+        var n          = group.length;
+        var sumAspects = group.reduce(function (s, k) { return s + aspects[k]; }, 0);
+        var H          = (W - GAP * (n - 1)) / sumAspects;
+
+        var rowEl = document.createElement('div');
+        rowEl.style.display = 'flex';
+        rowEl.style.gap     = GAP + 'px';
+        if (ri < groups.length - 1) rowEl.style.marginBottom = GAP + 'px';
+
+        group.forEach(function (k) {
+          var img = imgs[k];
+          img.style.width      = (H * aspects[k]) + 'px';
+          img.style.height     = H + 'px';
+          img.style.flexShrink = '0';
+          rowEl.appendChild(img);
+        });
+
+        gallery.appendChild(rowEl);
+      });
+    }
+
+    var pending = imgs.length;
+    function tick() { if (--pending <= 0) layout(); }
+    imgs.forEach(function (img) {
+      if (img.complete && img.naturalWidth > 0) {
+        tick();
+      } else {
+        img.addEventListener('load', tick);
+        img.addEventListener('error', tick);
+      }
+    });
+
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(layout, 80);
+    });
+  })();
 </script>
 </body>
 </html>
