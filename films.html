@@ -178,7 +178,7 @@
     }
 
     /* ── GALLERY (identical to Featured Work grid) ── */
-    #film-work { padding: 0 40px 100px; }
+    #film-work { padding: 0 40px 64px; }
     .work-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -236,6 +236,29 @@
       pointer-events: none;
     }
 
+    /* ── STILLS GALLERY ── */
+    #film-gallery { padding: 0 40px 100px; }
+    .section-label {
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+    .film-gallery-grid {
+      overflow: hidden;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .film-gallery-grid img {
+      display: block;
+      object-fit: cover;
+      max-width: 100%;
+      height: 220px;
+      width: auto;
+    }
+
     /* ── FOOTER ── */
     footer { margin-top: 96px; padding: 0 40px 56px; }
     footer hr { border: none; border-top: 1px solid #000; margin-bottom: 32px; }
@@ -262,8 +285,9 @@
       .nav-right { display: none; }
       .hamburger { display: flex; }
       .films-header { padding: 76px 24px 0; }
-      #film-work { padding: 0 24px 60px; }
+      #film-work { padding: 0 24px 40px; }
       .work-grid { grid-template-columns: 1fr; }
+      #film-gallery { padding: 0 24px 60px; }
       footer  { padding: 0 24px 40px; margin-top: 64px; }
     }
   </style>
@@ -311,6 +335,11 @@
 
 <div id="film-work">
   <div class="work-grid" id="filmWorkGrid"></div>
+</div>
+
+<div id="film-gallery">
+  <p class="section-label">Gallery</p>
+  <div class="film-gallery-grid" id="filmGalleryGrid"></div>
 </div>
 
 <footer id="contact">
@@ -384,6 +413,104 @@
 
     filmGrid.appendChild(wrap);
   });
+
+  // ── STILLS GALLERY (justified rows) ──
+  (function () {
+    var gallery = document.getElementById('filmGalleryGrid');
+    if (!gallery) return;
+
+    var sources = [
+      'gallery%20stills/gallery01.jpg',
+      'gallery%20stills/gallery02.jpg',
+      'gallery%20stills/gallery03.jpg',
+      'gallery%20stills/gallery04.jpg',
+      'gallery%20stills/gallery05.jpg',
+      'gallery%20stills/gallery06.jpg',
+      'film%20stills/tally%20stills/st1.png',
+      'film%20stills/tally%20stills/st3.png',
+      'film%20stills/tally%20stills/st5.png',
+    ];
+
+    var imgs = sources.map(function (src) {
+      var img = document.createElement('img');
+      img.src = src;
+      img.alt = 'Film still';
+      img.loading = 'eager';
+      gallery.appendChild(img);
+      return img;
+    });
+
+    var GAP = 8;
+    var MAX_PER_ROW = 4;
+
+    function layout() {
+      var cs = window.getComputedStyle(gallery);
+      var W  = gallery.clientWidth
+                 - parseFloat(cs.paddingLeft)
+                 - parseFloat(cs.paddingRight);
+
+      var aspects = imgs.map(function (img) {
+        var ar = img.naturalWidth / img.naturalHeight;
+        return (ar > 0 && isFinite(ar)) ? ar : 3 / 2;
+      });
+
+      var TH = window.innerWidth > 900 ? 320 : (window.innerWidth <= 480 ? 160 : 220);
+      var groups = [];
+      var i = 0;
+      while (i < imgs.length) {
+        var j = i, sum = 0;
+        while (j < imgs.length && (j - i) < MAX_PER_ROW) {
+          sum += aspects[j];
+          j++;
+          if (sum * TH + GAP * (j - i - 1) >= W) break;
+        }
+        var g = [];
+        for (var k = i; k < j; k++) g.push(k);
+        groups.push(g);
+        i = j;
+      }
+
+      gallery.innerHTML = '';
+
+      groups.forEach(function (group, ri) {
+        var n          = group.length;
+        var sumAspects = group.reduce(function (s, k) { return s + aspects[k]; }, 0);
+        var H          = (W - GAP * (n - 1)) / sumAspects;
+
+        var rowEl = document.createElement('div');
+        rowEl.style.display = 'flex';
+        rowEl.style.gap     = GAP + 'px';
+        if (ri < groups.length - 1) rowEl.style.marginBottom = GAP + 'px';
+
+        group.forEach(function (k) {
+          var img = imgs[k];
+          img.style.width      = (H * aspects[k]) + 'px';
+          img.style.height     = H + 'px';
+          img.style.flexShrink = '0';
+          rowEl.appendChild(img);
+        });
+
+        gallery.appendChild(rowEl);
+      });
+    }
+
+    var pending = imgs.length;
+    function tick() { if (--pending <= 0) layout(); }
+    imgs.forEach(function (img) {
+      if (img.complete && img.naturalWidth > 0) {
+        tick();
+      } else {
+        img.addEventListener('load', tick);
+        img.addEventListener('error', tick);
+      }
+    });
+
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(layout, 80);
+    });
+  })();
 </script>
 </body>
 </html>
