@@ -38,64 +38,6 @@
     button { font-family: inherit; font-weight: 500; }
     img { display: block; max-width: 100%; }
 
-    /* ── PRELOADER ── */
-    #preloader {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.6s ease;
-    }
-    #preloader.preload-hidden { opacity: 0; pointer-events: none; }
-    body.preload-active { overflow: hidden; }
-    .preload-frame {
-      position: relative;
-      width: min(46vw, 380px);
-      aspect-ratio: 900 / 674;
-    }
-    .preload-img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      opacity: 0;
-      transform: scale(1.35) rotate(-9deg);
-    }
-    @keyframes preload-zoom-rotate {
-      0%   { opacity: 0; transform: scale(1.35) rotate(-9deg); }
-      35%  { opacity: 1; }
-      100% { opacity: 1; transform: scale(1) rotate(0deg); }
-    }
-    .preload-img.active {
-      animation: preload-zoom-rotate 1.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
-    .preload-wordmark {
-      margin-top: 8px;
-      text-align: center;
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-    .preload-wordmark.active { opacity: 1; transform: translateY(0); }
-    .preload-logo { height: 56px; width: auto; display: block; margin: 0 auto; }
-    .preload-role {
-      font-family: 'IBM Plex Mono', monospace;
-      font-weight: 500;
-      font-size: 12px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: #F2C230;
-      margin-top: 6px;
-    }
-    @media (max-width: 768px) {
-      .preload-frame { width: 70vw; }
-    }
-
     /* ── NAV ── */
     nav {
       position: fixed;
@@ -566,11 +508,33 @@
     /* ── WORK GRID ── */
     #work { margin-top: 96px; padding: 0 40px; }
     .work-grid {
+      position: relative;
+      display: block;
+    }
+    .work-grid.is-scattered { overflow: visible; }
+    .card-wrap { }
+    .work-grid.is-scattered .card-wrap {
+      position: absolute;
+      opacity: 0;
+      filter: blur(12px);
+      will-change: opacity, filter, transform;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .work-grid.is-scattered .card-wrap.in-view {
+      animation: work-tile-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes work-tile-in {
+      from { opacity: 0; filter: blur(12px); }
+      to   { opacity: 1; filter: blur(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .work-grid.is-scattered .card-wrap { opacity: 1; filter: none; animation: none; }
+    }
+    .work-grid:not(.is-scattered) {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
     }
-    .card-wrap { }
     .project-card {
       display: block;
       width: 100%;
@@ -718,6 +682,49 @@
     }
     .photo-item img:hover { opacity: 0.85; }
 
+    /* ── ABOUT INTRO (name reveal) ── */
+    #about-hero {
+      min-height: 100vh;
+      background: #000;
+      background-attachment: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .about-hero-name-wrap {
+      position: relative;
+      display: inline-block;
+    }
+    .about-hero-name {
+      font-family: Helvetica, Arial, sans-serif;
+      font-weight: 700;
+      text-transform: lowercase;
+      color: #fff;
+      font-size: clamp(2rem, 8vw, 5.5rem);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      text-align: center;
+      padding: 0 24px;
+      cursor: default;
+      filter: blur(14px);
+      transition: filter 0.15s ease-out;
+      margin: 0;
+    }
+    .about-hero-name--sharp {
+      position: absolute;
+      inset: 0;
+      filter: blur(0);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      -webkit-mask-image: radial-gradient(circle 45px at var(--mx, 50%) var(--my, 50%), #000 0%, transparent 100%);
+      mask-image: radial-gradient(circle 45px at var(--mx, 50%) var(--my, 50%), #000 0%, transparent 100%);
+    }
+    @media (hover: hover) {
+      .about-hero-name-wrap:hover .about-hero-name--sharp { opacity: 1; }
+    }
+
     /* ── ABOUT ── */
     #about { margin-top: 96px; padding: 0 40px; }
 
@@ -732,13 +739,6 @@
       width: 100%;
       height: auto;
       display: block;
-      transform: scale(1.08);
-      opacity: 0;
-      transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease-out;
-    }
-    .about-collage.in-view {
-      transform: scale(1);
-      opacity: 1;
     }
     .about-text { }
     .bio-text {
@@ -968,7 +968,7 @@
       .bio-text { font-size: 15px; line-height: 1.55; }
       footer  { padding: 0 24px 40px; margin-top: 64px; }
 
-      .work-grid { grid-template-columns: repeat(2, 1fr); }
+      .work-grid:not(.is-scattered) { grid-template-columns: repeat(2, 1fr); }
       .about-grid { grid-template-columns: 1fr; gap: 32px; }
 
       .overlay-nav    { padding: 0 24px; }
@@ -989,17 +989,6 @@
   </style>
 </head>
 <body>
-
-<!-- ── PRELOADER ──────────────────────────────────── -->
-<div id="preloader">
-  <div class="preload-frame">
-    <img class="preload-img" src="preload/frame-2.png" alt="">
-  </div>
-  <div class="preload-wordmark">
-    <img class="preload-logo" src="yuh.png" alt="Colin Chow">
-    <p class="preload-role">creative director</p>
-  </div>
-</div>
 
 <!-- ── NAV ────────────────────────────────────────── -->
 <nav>
@@ -1172,6 +1161,14 @@
   </div>
 </section>
 
+<!-- ── ABOUT INTRO (name reveal) ──────────────────── -->
+<section id="about-hero">
+  <div class="about-hero-name-wrap">
+    <h2 class="about-hero-name">colin chow</h2>
+    <h2 class="about-hero-name about-hero-name--sharp" aria-hidden="true">colin chow</h2>
+  </div>
+</section>
+
 <!-- ── ABOUT ──────────────────────────────────────── -->
 <section id="about">
   <h2 class="section-label">About</h2>
@@ -1220,36 +1217,6 @@
 
 <script>
 
-// ── PRELOADER ─────────────────────────────────────────────────────────────────
-
-(function() {
-  var preloader = document.getElementById('preloader');
-  if (!preloader) return;
-
-  if (sessionStorage.getItem('preloadShown')) {
-    preloader.remove();
-    return;
-  }
-  sessionStorage.setItem('preloadShown', '1');
-
-  document.body.classList.add('preload-active');
-  var img      = preloader.querySelector('.preload-img');
-  var wordmark = preloader.querySelector('.preload-wordmark');
-
-  img.classList.add('active');
-  setTimeout(function() {
-    wordmark.classList.add('active');
-  }, 1550);
-  setTimeout(function() {
-    preloader.classList.add('preload-hidden');
-    document.body.classList.remove('preload-active');
-  }, 2450);
-  setTimeout(function() {
-    preloader.remove();
-  }, 3050);
-})();
-
-
 // ── PROJECT DATA ─────────────────────────────────────────────────────────────
 
 var projects = [
@@ -1283,6 +1250,8 @@ var projects = [
     'selected%20work/spurs%20pregame%202026/DSC06583.JPG',
   ], href: 'project%20pages/spurs-pregame.html', hideYear: true },
   { slug: 'ccya-basketball',      title: 'CCYA Celebrity Basketball', category: 'Event Coverage',     year: 2024, cover: 'selected%20work/ccya/ccya01.jpg', images: [], href: 'project%20pages/ccya-basketball.html', hideYear: true },
+  { slug: 'marble-spec-ad',       title: 'Marble Spec Ad',           category: 'Commercial',         year: 2026, cover: 'film%20stills/marble%20stills/marble01.jpg', images: [], href: 'project%20pages/marble-spec-ad.html', hideYear: true },
+  { slug: 'prototype',            title: 'Prototype',                category: 'Branding',           year: 2026, cover: 'selected%20work/prototype/prototype01.jpg', images: [], href: 'project%20pages/prototype.html', hideYear: true },
 ];
 
 
@@ -1312,6 +1281,174 @@ projects.forEach(function(p, i) {
 });
 
 
+// ── FEATURED WORK SCATTER LAYOUT ──────────────────────────────────────────────
+(function () {
+  var section = document.getElementById('work');
+  var grid = document.getElementById('workGrid');
+  var tiles = Array.prototype.slice.call(grid.querySelectorAll('.card-wrap'));
+  if (!tiles.length) return;
+
+  var mq = window.matchMedia('(min-width: 769px)');
+  var revealed = false;
+  var observer = null;
+
+  function layoutScatter() {
+    var containerWidth = grid.getBoundingClientRect().width;
+    var columns = containerWidth > 1100 ? 4 : 3;
+    var cellW = containerWidth / columns;
+    var cellH = cellW * 0.68;
+    var maxBottom = 0;
+
+    tiles.forEach(function (tile, i) {
+      var row = Math.floor(i / columns);
+      var col = i % columns;
+      var baseLeft = col * cellW + cellW / 2;
+      var baseTop = row * cellH + cellH / 2;
+
+      var jitterX = (Math.random() - 0.5) * cellW * 0.5;
+      var jitterY = (Math.random() - 0.5) * cellH * 0.5;
+      var width = cellW * (0.78 + Math.random() * 0.4);
+
+      var left = baseLeft + jitterX;
+      var top = baseTop + jitterY;
+
+      // bigger tiles move less (depth 0.5), smaller tiles move more (depth 1)
+      var widthFactor = (width / cellW - 0.78) / 0.4;
+      var depth = 1 - 0.5 * Math.min(1, Math.max(0, widthFactor));
+
+      tile.style.left = left + 'px';
+      tile.style.top = top + 'px';
+      tile.style.width = width + 'px';
+      tile.style.transform = 'translate(-50%, -50%)';
+      tile.style.zIndex = String(1 + Math.floor(Math.random() * 40));
+      tile.dataset.depth = depth.toFixed(3);
+
+      var bottom = top + (width * 0.68) / 2;
+      if (bottom > maxBottom) maxBottom = bottom;
+    });
+
+    grid.style.height = (maxBottom + 24) + 'px';
+  }
+
+  function clearScatter() {
+    tiles.forEach(function (tile) {
+      tile.style.left = '';
+      tile.style.top = '';
+      tile.style.width = '';
+      tile.style.transform = '';
+      tile.style.zIndex = '';
+      tile.style.animationDelay = '';
+      tile.classList.remove('in-view');
+      delete tile.dataset.depth;
+    });
+    grid.style.height = '';
+  }
+
+  // ── MOUSE PARALLAX ──
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var parallaxActive = false;
+  var rafId = null;
+  var pendingX = 0, pendingY = 0, hasPending = false;
+
+  function applyParallax(clientX, clientY) {
+    var rect = section.getBoundingClientRect();
+    var cx = rect.left + rect.width / 2;
+    var cy = rect.top + rect.height / 2;
+    var shiftX = -(clientX - cx) * 0.1;
+    var shiftY = -(clientY - cy) * 0.22;
+
+    tiles.forEach(function (tile) {
+      var depth = parseFloat(tile.dataset.depth || '1');
+      tile.style.transform =
+        'translate(-50%, -50%) translate(' + (shiftX * depth).toFixed(2) + 'px, ' + (shiftY * depth).toFixed(2) + 'px)';
+    });
+  }
+
+  function resetParallax() {
+    tiles.forEach(function (tile) {
+      tile.style.transform = 'translate(-50%, -50%)';
+    });
+  }
+
+  function onMouseMove(e) {
+    pendingX = e.clientX;
+    pendingY = e.clientY;
+    hasPending = true;
+    if (rafId == null) {
+      rafId = requestAnimationFrame(function () {
+        rafId = null;
+        if (hasPending) {
+          hasPending = false;
+          applyParallax(pendingX, pendingY);
+        }
+      });
+    }
+  }
+
+  function enableParallax() {
+    if (parallaxActive || prefersReduced) return;
+    parallaxActive = true;
+    section.addEventListener('mousemove', onMouseMove);
+    section.addEventListener('mouseleave', resetParallax);
+  }
+
+  function disableParallax() {
+    if (!parallaxActive) return;
+    parallaxActive = false;
+    section.removeEventListener('mousemove', onMouseMove);
+    section.removeEventListener('mouseleave', resetParallax);
+    if (rafId != null) { cancelAnimationFrame(rafId); rafId = null; }
+    resetParallax();
+  }
+
+  function armReveal() {
+    if (observer) observer.disconnect();
+    observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && !revealed) {
+          revealed = true;
+          tiles.forEach(function (tile) {
+            tile.style.animationDelay = (Math.random() * 0.8).toFixed(2) + 's';
+            tile.classList.add('in-view');
+          });
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.1 });
+    observer.observe(section);
+  }
+
+  function apply() {
+    if (mq.matches) {
+      grid.classList.add('is-scattered');
+      layoutScatter();
+      if (!revealed) {
+        armReveal();
+      } else {
+        tiles.forEach(function (tile) { tile.classList.add('in-view'); });
+      }
+      enableParallax();
+    } else {
+      if (observer) observer.disconnect();
+      disableParallax();
+      grid.classList.remove('is-scattered');
+      clearScatter();
+    }
+  }
+
+  apply();
+
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      if (mq.matches) layoutScatter();
+    }, 150);
+  });
+
+  if (mq.addEventListener) mq.addEventListener('change', apply);
+  else mq.addListener(apply);
+})();
 
 
 // ── SMART NAV (hide on scroll down, show on scroll up) ───────────────────────
@@ -1713,22 +1850,39 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-// ── ABOUT COLLAGE SCROLL REVEAL ──────────────────────────────────────────────
+// ── ABOUT NAME REVEAL (scroll-linked focus for touch devices) ────────────────
 
 (function () {
-  var collage = document.querySelector('.about-collage');
-  if (!collage) return;
+  var name = document.querySelector('.about-hero-name');
+  if (!name) return;
+  if (!window.matchMedia('(hover: none)').matches) return;
 
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        collage.classList.add('in-view');
-        obs.unobserve(collage);
-      }
-    });
-  }, { threshold: 0.2 });
+  var MAX_BLUR = 14;
+  function update() {
+    var rect       = name.getBoundingClientRect();
+    var elCenter   = rect.top + rect.height / 2;
+    var vpCenter   = window.innerHeight / 2;
+    var dist       = Math.abs(elCenter - vpCenter);
+    var progress   = Math.min(dist / (window.innerHeight / 2), 1);
+    name.style.filter = 'blur(' + (progress * MAX_BLUR) + 'px)';
+  }
 
-  obs.observe(collage);
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+
+// ── ABOUT NAME REVEAL (spotlight follows cursor on hover) ────────────────────
+
+(function () {
+  var wrap = document.querySelector('.about-hero-name-wrap');
+  if (!wrap) return;
+
+  wrap.addEventListener('mousemove', function (e) {
+    var rect = wrap.getBoundingClientRect();
+    wrap.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+    wrap.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+  });
 })();
 
 
